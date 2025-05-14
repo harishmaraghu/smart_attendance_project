@@ -10,6 +10,7 @@
     // Format date for API request (YYYY-MM-DD)
     String _formatDateForApi(DateTime date) {
       return DateFormat("yyyy-MM-dd").format(date);
+
     }
 
     // Get attendance records for a specific employee and date
