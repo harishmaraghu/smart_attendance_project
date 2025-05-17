@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:smart_attendance_project/core/constants/app_text.dart';
 import 'package:smart_attendance_project/features/clams/presentation/pages/claims_create.dart';
+import 'package:smart_attendance_project/features/home_dashboard/presentation/pages/home_screen.dart';
 import 'package:smart_attendance_project/features/leave/presentation/pages/leave_history/leave_record.dart';
+import 'package:smart_attendance_project/features/leave/presentation/pages/leaveapply/leave_apply_screen.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../attendance/presentation/pages/attendance_history.dart';
 import '../../../payment/presentation/pages/payment_history.dart';
 
-class TopDashboardHeaderinAttendance extends StatelessWidget {
+class TopDashboardHeaderinLeave extends StatelessWidget {
   final colors = AppColors();
-  final String username ="Harishma";
+  final String username ="demo";
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,11 @@ class TopDashboardHeaderinAttendance extends StatelessWidget {
             children: [
               // Menu Icon with PopupMenu
               GestureDetector(
-                onTap: () => Navigator.pop(context),
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context)=>HomeScreen(username: username,)));
+                  },
                 child: Image.asset(
                   'assets/icons/back_icon.png',
                   width: screenWidth * 0.10,
@@ -50,11 +57,10 @@ class TopDashboardHeaderinAttendance extends StatelessWidget {
               // Notification Icon with onTap
               GestureDetector(
                 onTap: () {
-                  // Handle notification tap here
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('No new notifications'),
-                    ),
-                  );
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context)=>LeaveApplyScreen(username: username,)));
+
                 },
                 child: Container(
                   padding: EdgeInsets.all(8),
@@ -62,8 +68,7 @@ class TopDashboardHeaderinAttendance extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(Icons.notifications_none,
-                      color: AppColors().dashboard_icon_color, size: 22),
+                  child: Text("Leave apply",style: AppTextstyle.pragra_text,)
                 ),
               ),
             ],

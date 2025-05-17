@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // handle navigation or state update
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => HomeScreen(username: AutofillHints.username,)),
       );
     } catch (e) {
       print("Login Error: $e");

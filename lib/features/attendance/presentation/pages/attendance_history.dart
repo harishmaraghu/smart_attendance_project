@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:smart_attendance_project/core/constants/app_colors.dart';
 import 'package:smart_attendance_project/features/attendance/presentation/widgets/top_dashboard.dart';
 import 'package:smart_attendance_project/features/attendance/utilites/utility.dart';
@@ -284,10 +283,12 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
 
   void _showAttendanceDetails(AttendanceRecord record) {
     showDialog(
+      // barrierColor: colors.backgroundcolor,
       context: context,
       builder: (context) => AlertDialog(
         title: Text("Attendance Details - ${formatDate(record.date)}"),
         content: Column(
+
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

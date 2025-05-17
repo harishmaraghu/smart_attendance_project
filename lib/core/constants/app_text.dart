@@ -81,6 +81,18 @@ class AppTextstyle {
    );
 
 
+   static final ElevatedButton_text_leave_apply = ElevatedButton.styleFrom(
+       backgroundColor: _colors.success_color,
+       foregroundColor: _colors.button_bg_text_color,
+       minimumSize: const Size(double.infinity, 48),
+       shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+       )
+   );
+
+
+
+
 
    // login screen page outline button
    static final OutlineButton=OutlinedButton.styleFrom(
@@ -100,6 +112,12 @@ class AppTextstyle {
       color: Colors.blue,
       fontWeight: FontWeight.w500,
    );
+
+   static final form_heading_text_bold=TextStyle(color: Colors.white, fontWeight: FontWeight.bold);
+   static final form_input_text_bold=TextStyle(color: Colors.grey);
+
+//    Clim Create form
+    static final claim_form_heading_text=TextStyle(color: Colors.grey,fontSize: 14);
 
 
 }

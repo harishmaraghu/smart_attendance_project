@@ -19,7 +19,7 @@ class _SplashScreen1State extends State<SplashScreen1> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomeScreen(isCheckedIn: true),
+          builder: (context) => const HomeScreen(isCheckedIn: true,username: AutofillHints.username,),
         ),
       );
     });

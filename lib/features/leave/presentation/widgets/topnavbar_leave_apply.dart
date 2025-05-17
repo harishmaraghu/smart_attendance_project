@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:smart_attendance_project/core/constants/app_text.dart';
 import 'package:smart_attendance_project/features/clams/presentation/pages/claims_create.dart';
 import 'package:smart_attendance_project/features/leave/presentation/pages/leave_history/leave_record.dart';
+import 'package:smart_attendance_project/features/leave/presentation/pages/leaveapply/leave_apply_screen.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../attendance/presentation/pages/attendance_history.dart';
 import '../../../payment/presentation/pages/payment_history.dart';
 
-class TopDashboardHeaderinAttendance extends StatelessWidget {
+class TopDashboardHeaderinLeaveApply extends StatelessWidget {
   final colors = AppColors();
-  final String username ="Harishma";
+  final String username ="demo";
 
   @override
   Widget build(BuildContext context) {
@@ -34,38 +36,18 @@ class TopDashboardHeaderinAttendance extends StatelessWidget {
         children: [
           // Top row with menu and notification
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               // Menu Icon with PopupMenu
               GestureDetector(
                 onTap: () => Navigator.pop(context),
                 child: Image.asset(
                   'assets/icons/back_icon.png',
-                  width: screenWidth * 0.10,
+                  width: screenWidth * 0.12,
                   height: screenWidth * 0.10,
                 ),
               ),
-
-
-              // Notification Icon with onTap
-              GestureDetector(
-                onTap: () {
-                  // Handle notification tap here
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('No new notifications'),
-                    ),
-                  );
-                },
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(Icons.notifications_none,
-                      color: AppColors().dashboard_icon_color, size: 22),
-                ),
-              ),
+              Text('Apply Leave',style: AppTextstyle.normal_text_2),
             ],
           ),
         ],

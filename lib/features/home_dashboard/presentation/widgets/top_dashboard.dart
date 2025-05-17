@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smart_attendance_project/features/clams/presentation/pages/claims_history.dart';
-import 'package:smart_attendance_project/features/leave/presentation/pages/leave_history.dart';
+import 'package:smart_attendance_project/features/clams/presentation/pages/claims_create.dart';
+import 'package:smart_attendance_project/features/leave/presentation/pages/leave_history/leave_record.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../attendance/presentation/pages/attendance_history.dart';
 import '../../../payment/presentation/pages/payment_history.dart';
@@ -125,7 +125,7 @@ class TopDashboardHeader extends StatelessWidget {
                       context, MaterialPageRoute(builder: (_) => AttendanceHistory(username: username)));
                 }),
                 _buildIcon(Icons.assignment, 'Claims', () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => ClaimsHistory()));
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => ClaimsCreate()));
                 }),
                 _buildIcon(Icons.receipt_long, 'Payslip', () {
                   Navigator.push(context, MaterialPageRoute(builder: (_) => PaymentHistory()));

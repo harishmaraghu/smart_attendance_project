@@ -8,7 +8,9 @@ import '../widgets/top_dashboard.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isCheckedIn;
-  const HomeScreen({super.key, this.isCheckedIn = false});
+  final String username;
+
+  const HomeScreen({super.key,required this.username ,this.isCheckedIn = false});
 
 
   @override
