@@ -4,6 +4,7 @@ import 'package:smart_attendance_project/features/login/presentation/pages/phone
 import 'package:smart_attendance_project/features/login/presentation/widgets/password_field.dart';
 
 import '../../../../core/constants/app_text.dart';
+import '../../../../core/constants/shared_prefsHelper.dart';
 import '../../../home_dashboard/presentation/pages/home_screen.dart';
 import '../../data/datasources/login_remote_datasource.dart';
 import '../../data/repositories/login_repository.dart';
@@ -23,29 +24,67 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
   final colors = AppColors();
   late final LoginRepository _repository;
+  bool _isLoading = false;
+
+
+
+  Future<void> _checkLoginStatus() async {
+    final isLoggedIn = await SharedPrefsHelper.isLoggedIn();
+    if (isLoggedIn) {
+      final username = await SharedPrefsHelper.getUsername();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen(username: username)),
+      );
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _repository = LoginRepository(remoteDataSource: LoginRemoteDataSource());  // Initialize the repository here
+    _repository = LoginRepository(remoteDataSource: LoginRemoteDataSource());
+    _checkLoginStatus();// Initialize the repository here
   }
 
 
   Future<void> _login() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final result = await _repository.login(
         _usernameController.text,
         _passwordController.text,
       );
+
       print("------------------------Login Success: $result");
-      // handle navigation or state update
+
+      // Save login response to SharedPreferences
+      await SharedPrefsHelper.saveUserData(result);
+
+      // Get username from saved data
+      final username = await
+      SharedPrefsHelper.getUsername();
+
+      // Navigate to home screen with dynamic username
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen(username: AutofillHints.username,)),
+        MaterialPageRoute(builder: (context) => HomeScreen(username: username)),
       );
     } catch (e) {
       print("Login Error: $e");
-      // show error to user
+      // Show error to user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Login failed: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -184,9 +223,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               SizedBox(height: screenHeight * 0.015),
 
-                              LoginButton(onPressed:  _login),
+                              _isLoading
+                                  ? Container(
+                                width: double.infinity,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: colors.backgroundcolor.withOpacity(0.7),
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                                  : LoginButton(onPressed: _login),
                             ],
                           ),
+
+
 
                           SizedBox(height: screenHeight * 0.01),
 
@@ -254,7 +309,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ],
                           ),
-                        ],
+                        ]
                       ),
                     ),
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_attendance_project/features/facebiometric/presentation/pages/face_biometric.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/shared_prefsHelper.dart';
 import '../../../location/presentation/pages/location_screen.dart';
 import '../../../profile/presentation/screens/profile_page.dart';
 import '../widgets/bottom_nav_bar.dart';
@@ -19,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final colors = AppColors();
+  String displayUsername = '';
   int _selectedIndex = 0;
   late bool _isCheckedIn;
 
@@ -27,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _isCheckedIn = widget.isCheckedIn;
+    _loadUsername();
   }
 
   void _toggleCheckInStatus() {
@@ -43,19 +46,34 @@ class _HomeScreenState extends State<HomeScreen> {
   //   ProfileScreen(),  // Index 1
   // ];
 
+
+
+  // Load username from SharedPreferences or use passed username
+  Future<void> _loadUsername() async {
+    try {
+      final savedUsername = await SharedPrefsHelper.getUsername();
+      setState(() {
+        displayUsername = savedUsername.isNotEmpty ? savedUsername : widget.username;
+      });
+    } catch (e) {
+      setState(() {
+        displayUsername = widget.username; // Fallback to passed username
+      });
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-
-
-
     return Scaffold(
 
       body: SafeArea(
         child: Column(
           children: [
             // Top blue container with greeting and icons
-            TopDashboardHeader(),
+            TopDashboardHeader(username: displayUsername.isNotEmpty ? displayUsername : widget.username),
 
             // Body content (can be added below)
             Expanded(

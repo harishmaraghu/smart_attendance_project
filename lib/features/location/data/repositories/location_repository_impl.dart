@@ -24,7 +24,8 @@ class LocationRepositoryImpl {
 
 
   Future<void> checkInToServer(CheckInRequestModel data) async {
-    final url = Uri.parse("https://iin4y2ja01.execute-api.ap-south-1.amazonaws.com/default/FaceRecognitionAttendance");
+    final url = Uri.parse(
+        "https://eybtt1i5q4.execute-api.ap-south-1.amazonaws.com/default/FaceRecognition");
 
     final response = await http.post(
       url,

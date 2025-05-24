@@ -6,8 +6,8 @@ class LoginRepository {
 
   LoginRepository({required this.remoteDataSource});
 
-  Future<Map<String, dynamic>> login(String username, String password) {
-    final model = LoginModel(username: username, password: password);
+  Future<Map<String, dynamic>> login(String Username, String Password) {
+    final model = LoginModel(Username: Username, Password: Password);
     return remoteDataSource.login(model);
   }
 }
