@@ -79,7 +79,17 @@ class _ClaimFormState extends State<ClaimForm> {
                         ),
 
                       ),
-
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ClaimHistoryScreen(userId: widget.userId),
+                            ),
+                          );
+                        },
+                        child: Text("View Claim History"),
+                      )
                     ],
                   ),
                 ),

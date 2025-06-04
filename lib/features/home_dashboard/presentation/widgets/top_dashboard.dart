@@ -195,256 +195,256 @@ class _TopDashboardHeaderState extends State<TopDashboardHeader> {
           }
 
 
-          return Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(
-              top: screenHeight * 0.04,
-              left: screenWidth * 0.05,
-              right: screenWidth * 0.05,
-              bottom: screenHeight * 0.02,
+        return Container(
+          width: double.infinity,
+          padding: EdgeInsets.only(
+            top: screenHeight * 0.04,
+            left: screenWidth * 0.05,
+            right: screenWidth * 0.05,
+            bottom: screenHeight * 0.02,
+          ),
+          decoration: BoxDecoration(
+            color: colors.backgroundcolor,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30),
             ),
-            decoration: BoxDecoration(
-              color: colors.backgroundcolor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Top row with menu and notification
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Menu Icon with PopupMenu
-                    PopupMenuButton<String>(
-                      offset: Offset(0, 40), // Adjust dropdown position below the icon
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      itemBuilder: (BuildContext context) => [
-                        PopupMenuItem(value: 'attendance', child: Text('Attendance')),
-                        PopupMenuItem(
-                          value: 'logout',
-                          child: Row(
-                            children: [
-                              Icon(Icons.logout, color: Colors.red, size: 20),
-                              SizedBox(width: 8),
-                              Text(
-                                'Logout',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                      onSelected: (value) {
-                        if (!mounted) return;
-
-                        switch (value) {
-                          case 'logout':
-                            _handleLogout();
-                            break;
-                          case 'attendance':
-                          // Use userId from BLoC state instead of SharedPrefs call
-                            if (userId != null && userId.isNotEmpty) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => AttendanceHistory(Userid: userId!),
-                                ),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('User ID not found')),
-                              );
-                            }
-                            break;
-                          case 'profile':
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Profile feature coming soon')),
-                            );
-                            break;
-                          case 'settings':
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Settings feature coming soon')),
-                            );
-                            break;
-                        }
-                      },
-                      child: Icon(Icons.menu, color: Colors.white, size: 28),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Top row with menu and notification
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Menu Icon with PopupMenu
+                  PopupMenuButton<String>(
+                    offset: Offset(0, 40), // Adjust dropdown position below the icon
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-
-                    // Notification Icon with onTap
-                    GestureDetector(
-                      onTap: () {
-                        // Handle notification tap here
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('No new notifications')),
-                        );
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
+                    itemBuilder: (BuildContext context) => [
+                      PopupMenuItem(value: 'attendance', child: Text('Attendance')),
+                      PopupMenuItem(
+                        value: 'logout',
+                        child: Row(
+                          children: [
+                            Icon(Icons.logout, color: Colors.red, size: 20),
+                            SizedBox(width: 8),
+                            Text(
+                              'Logout',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
                         ),
-                        child: Icon(Icons.notifications_none,
-                            color: AppColors().dashboard_icon_color, size: 22),
                       ),
+                    ],
+                    onSelected: (value) {
+                      if (!mounted) return;
+
+                      switch (value) {
+                        case 'logout':
+                          _handleLogout();
+                          break;
+                        case 'attendance':
+                        // Use userId from BLoC state instead of SharedPrefs call
+                          if (userId != null && userId.isNotEmpty) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => AttendanceHistory(Userid: userId!),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('User ID not found')),
+                            );
+                          }
+                          break;
+                        case 'profile':
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Profile feature coming soon')),
+                          );
+                          break;
+                        case 'settings':
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Settings feature coming soon')),
+                          );
+                          break;
+                      }
+                    },
+                    child: Icon(Icons.menu, color: Colors.white, size: 28),
+                  ),
+
+                  // Notification Icon with onTap
+                  GestureDetector(
+                    onTap: () {
+                      // Handle notification tap here
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('No new notifications')),
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(Icons.notifications_none,
+                          color: AppColors().dashboard_icon_color, size: 22),
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 20),
+
+              // Greeting text with loading state handling
+              if (state is UserDataLoading)
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'Loading...',
+                      style: TextStyle(fontSize: 22, color: Colors.white),
+                    ),
+                  ],
+                )
+              else
+                Text.rich(
+                  TextSpan(
+                    text: 'Hello, ',
+                    style: TextStyle(fontSize: 22, color: Colors.white),
+                    children: [
+                      TextSpan(
+                        text: displayUsername,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+
+              SizedBox(height: 4),
+              Text(
+                'Welcome back to your dashboard.',
+                style: TextStyle(fontSize: 14, color: Colors.white70),
+              ),
+              SizedBox(height: 20),
+
+              // Floating white card with icons
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 10,
+                      offset: Offset(0, 2),
                     ),
                   ],
                 ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildIcon(Icons.access_time, 'Attendance', () {
+                      // Use userId from BLoC state instead of async SharedPrefs call
+                      if (userId != null && userId.isNotEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AttendanceHistory(Userid: userId!),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("User ID not found")),
+                        );
+                      }
+                    }),
+                    _buildIcon(Icons.assignment, 'Claims', () {
 
-                SizedBox(height: 20),
+                      if (userId != null && userId.isNotEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ClaimsCreate(Userid: userId!,username:displayUsername),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("User ID not found")),
+                        );
+                      }
+                      // Navigator.push(context, MaterialPageRoute(builder: (_) => ClaimsCreate()));
+                    }),
+                    _buildIcon(Icons.receipt_long, 'Payslip', () {
 
-                // Greeting text with loading state handling
-                if (state is UserDataLoading)
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        'Loading...',
-                        style: TextStyle(fontSize: 22, color: Colors.white),
-                      ),
-                    ],
-                  )
-                else
-                  Text.rich(
-                    TextSpan(
-                      text: 'Hello, ',
-                      style: TextStyle(fontSize: 22, color: Colors.white),
-                      children: [
-                        TextSpan(
-                          text: displayUsername,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                SizedBox(height: 4),
-                Text(
-                  'Welcome back to your dashboard.',
-                  style: TextStyle(fontSize: 14, color: Colors.white70),
-                ),
-                SizedBox(height: 20),
-
-                // Floating white card with icons
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildIcon(Icons.access_time, 'Attendance', () {
-                        // Use userId from BLoC state instead of async SharedPrefs call
-                        if (userId != null && userId.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => AttendanceHistory(Userid: userId!),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("User ID not found")),
-                          );
-                        }
-                      }),
-                      _buildIcon(Icons.assignment, 'Claims', () {
-
-                        if (userId != null && userId.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => ClaimsCreate(Userid: userId!,username:displayUsername),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("User ID not found")),
-                          );
-                        }
-                        // Navigator.push(context, MaterialPageRoute(builder: (_) => ClaimsCreate()));
-                      }),
-                      _buildIcon(Icons.receipt_long, 'Payslip', () {
-
-                        if (userId != null && userId.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => BlocProvider(
-                                create: (context) => PayslipBloc(PayslipApiService()), // Fixed syntax
-                                child: PaymentHistory(
-                                  userId: userId!, // Pass userId
-                                  username: displayUsername, // Pass username
-                                  selectedDate: null, // Will use current month, or pass specific date
-                                ),
+                      if (userId != null && userId.isNotEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => BlocProvider(
+                              create: (context) => PayslipBloc(PayslipApiService()), // Fixed syntax
+                              child: PaymentHistory(
+                                userId: userId!, // Pass userId
+                                username: displayUsername, // Pass username
+                                selectedDate: null, // Will use current month, or pass specific date
                               ),
                             ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("User ID not found")),
-                          );
-                        }
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("User ID not found")),
+                        );
+                      }
 
 
 
 
-                        // Navigator.push(context, MaterialPageRoute(builder: (_) => PaymentHistory()));
-                      }),
-                      _buildIcon(Icons.time_to_leave, 'Leave', () {
-                        if (userId != null && userId.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => BlocProvider(
-                                create: (context) => LeaveDashboardBloc(
-                                  repository: LeaveDashboardRepository(),
-                                ),
-                                child: LeaveDashboardPage(
-                                  Userid: userId!,
-                                  username: displayUsername,
-                                ),
+                      // Navigator.push(context, MaterialPageRoute(builder: (_) => PaymentHistory()));
+                    }),
+                    _buildIcon(Icons.time_to_leave, 'Leave', () {
+                      if (userId != null && userId.isNotEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => BlocProvider(
+                              create: (context) => LeaveDashboardBloc(
+                                repository: LeaveDashboardRepository(),
+                              ),
+                              child: LeaveDashboardPage(
+                                Userid: userId!,
+                                username: displayUsername,
                               ),
                             ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("User ID not found")),
-                          );
-                        }
-                      }),
-                    ],
-                  ),
-
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("User ID not found")),
+                        );
+                      }
+                    }),
+                  ],
                 ),
-              ],
-            ),
-          );
-        }
+
+              ),
+            ],
+          ),
+        );
+      }
     );
   }
 

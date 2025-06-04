@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:smart_attendance_project/profile/data/servcices/profile_services.dart';
-import 'package:smart_attendance_project/profile/models/profilemodels.dart';
-import 'package:smart_attendance_project/profile/presentation/widgets/error_widgets.dart';
-import 'package:smart_attendance_project/profile/presentation/widgets/profile_widgets.dart';
-import 'package:smart_attendance_project/profile/presentation/widgets/topbarprofile.dart';
+import 'package:smart_attendance_project/features/profile/data/servcices/profile_services.dart';
+import 'package:smart_attendance_project/features/profile/models/profilemodels.dart';
+import 'package:smart_attendance_project/features/profile/presentation/widgets/error_widgets.dart';
+import 'package:smart_attendance_project/features/profile/presentation/widgets/profile_widgets.dart';
+import 'package:smart_attendance_project/features/profile/presentation/widgets/topbarprofile.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String? userId;

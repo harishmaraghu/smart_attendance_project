@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:smart_attendance_project/profile/models/profilemodels.dart';
-// import 'package:smart_attendance_project/features/profile/models/profilemodels.dart';
+import 'package:smart_attendance_project/features/profile/models/profilemodels.dart';
 
 class ProfileApiService {
   static const String baseUrl = 'https://exx5b0hsfc.execute-api.ap-south-1.amazonaws.com/default/Profile';

@@ -18,6 +18,11 @@ class AppColors{
   final claim_form_card_bg_color= Color(0xff1E7FB8);
 
 
+
+
+
+
+
 //   E3F5FF(BLUE)   #F4FCFF   #F1FAFE  #1E80C9   #1E7FB8
 
 }
