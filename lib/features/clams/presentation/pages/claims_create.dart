@@ -6,7 +6,9 @@ import '../widgets/claim_create_widgets/top_nav_claim_apply.dart';
 import '../bloc/claim_create_bloc.dart'; // import your bloc
 
 class ClaimsCreate extends StatelessWidget {
-  const ClaimsCreate({super.key});
+ final String Userid;
+ final String username;
+  const ClaimsCreate({required this.Userid,required this.username,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,18 +16,21 @@ class ClaimsCreate extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            TopDashboardHeaderinClaimApply(),
+            TopDashboardHeaderinClaimApply(userId: Userid,userName: username,),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: BlocProvider(
                     create: (_) => ClaimCreateBloc(
-                userId: "123",
-                userName: "John Doe",
+
+                      userName: username,
+                     userId: Userid,
+                // userId: "15",
+                // userName: "demo check",
                 repository: ClaimRepository(),
               ),
-              child: ClaimForm(userId: "123", userName: "John Doe"),
+              child: ClaimForm(userId:Userid , userName:username),
             ),
 
       ),
