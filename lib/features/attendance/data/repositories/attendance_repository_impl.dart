@@ -12,56 +12,53 @@
       return DateFormat("yyyy-MM-dd").format(date);
 
     }
+// Add this method to your AttendanceRepository class
 
-    // Get attendance records for a specific employee and date
-    Future<List<AttendanceRecord>> getAttendanceRecords(String employeeName, DateTime? date) async {
-      try {
-        // Build URL with query parameters
-        final queryParams = {
-          'employeeName': employeeName,
-        };
+    Future<List<AttendanceRecord>> getAttendanceemployee(String userid) async {
+      final url = Uri.parse("https://ectzis56w6.execute-api.ap-south-1.amazonaws.com/default/GetAttendanceuser");
 
-        if (date != null) {
-          queryParams['date'] = _formatDateForApi(date);
-        }
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({"Userid": userid}),
+      );
 
-        // Build URI with query parameters
-        final uri = Uri.parse(baseUrl).replace(queryParameters: queryParams);
+      print('API Response for all records: ${response.body}');
+      print('Status Code: ${response.statusCode}');
 
-        // Print the full request URI
-        print("Requesting attendance records from: $uri");
-
-        // Make the API call
-        final response = await http.get(uri);
-
-        // Print raw response
-        print("Raw response status: ${response.statusCode}");
-        print("Raw response body: ${response.body}");
-
-        if (response.statusCode == 200) {
-          // Parse response
-          final List<dynamic> jsonData = json.decode(response.body);
-
-          // Print decoded JSON data
-          print("Decoded JSON: $jsonData");
-
-          // Convert to list of AttendanceRecord objects
-          final List<AttendanceRecord> records = jsonData.map((json) {
-            final record = AttendanceRecord.fromJson(json);
-            record.calculateTotalHours(); // Calculate total hours
-            print("Parsed record: $record"); // Print each record
-            return record;
-          }).toList();
-
-          return records;
-        } else {
-          throw Exception('Failed to load attendance records: ${response.statusCode}');
-        }
-      } catch (e) {
-        print('Error: $e');
-        throw Exception('Error fetching attendance records: $e');
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonList = jsonDecode(response.body);
+        return jsonList.map((json) => AttendanceRecord.fromJson(json)).toList();
+      } else {
+        throw Exception("Failed to load attendance records");
       }
     }
 
+// New method for date-specific attendance records
+    Future<List<AttendanceRecord>> getAttendanceemployeeByDate(String userid, DateTime date) async {
+      final url = Uri.parse("https://s05fcfq582.execute-api.ap-south-1.amazonaws.com/default/getattendancebydate");
 
+      // Format date as YYYY-MM-DD
+      final formattedDate = "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "Userid": userid,
+          "date": formattedDate
+        }),
+      );
+
+      print('API Response for date $formattedDate: ${response.body}');
+      print('Status Code: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonList = jsonDecode(response.body);
+        return jsonList.map((json) => AttendanceRecord.fromJson(json)).toList();
+      } else {
+        throw Exception("Failed to load attendance records for selected date");
+      }
+    }
   }
+

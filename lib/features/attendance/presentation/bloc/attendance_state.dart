@@ -17,3 +17,23 @@ class AttendanceError extends AttendanceState {
 
   AttendanceError(this.message);
 }
+
+//
+
+
+// // user_bloc_state.dart
+abstract class UserState {}
+
+class UserInitial extends UserState {}
+
+class UsernameLoaded extends UserState {
+  final String username;
+  final String Userid;
+
+  UsernameLoaded(this.username,this.Userid);
+}
+
+
+
+
+

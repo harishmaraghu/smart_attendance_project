@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:smart_attendance_project/core/constants/shared_prefsHelper.dart';
+import 'package:smart_attendance_project/profile/presentation/screens/profile_page.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../profile/presentation/screens/profile_page.dart';
+// import '../../../profile/presentation/screens/profile_page.dart';
 
 class BottomNavBar extends StatelessWidget {
   final colors = AppColors();
@@ -38,16 +40,24 @@ class BottomNavBar extends StatelessWidget {
     final isActive = selectedIndex == index;
 
     return GestureDetector(
-      onTap: (){
-      // Call onTabSelected to update the selected tab, and navigate if necessary
-      onTabSelected(index);
-      if (index == 1) { // If the profile tab is selected
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) =>
-              ProfileScreen()), // Navigate to ProfileScreen
-        );
-      }
+      onTap: ()async{
+        // Call onTabSelected to update the selected tab, and navigate if necessary
+        onTabSelected(index);
+        if (index == 1) { // If the profile tab is selected
+          // Get user data from SharedPreferences
+          final userId = await SharedPrefsHelper.getUserId();
+          final username = await SharedPrefsHelper.getUsername();
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfileScreen(
+                userId: userId,
+                username: username,
+              ),
+            ),
+          );
+        }
       },
       child: SizedBox(
         height: 50,

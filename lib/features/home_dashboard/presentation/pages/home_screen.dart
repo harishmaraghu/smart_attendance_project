@@ -3,7 +3,7 @@ import 'package:smart_attendance_project/features/facebiometric/presentation/pag
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/shared_prefsHelper.dart';
 import '../../../location/presentation/pages/location_screen.dart';
-import '../../../profile/presentation/screens/profile_page.dart';
+// import '../../../profile/presentation/screens/profile_page.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../widgets/top_dashboard.dart';
 
@@ -39,13 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
       MaterialPageRoute(builder: (context) => const FaceBiometric()),
     );
   }
-
-
-  // final List<Widget> _pages = [
-  //   HomeScreen(),     // Index 0
-  //   ProfileScreen(),  // Index 1
-  // ];
-
 
 
   // Load username from SharedPreferences or use passed username
@@ -88,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
 
-    //Bottom navigation
+      //Bottom navigation
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
         height: 80, // Adjust the height as per your design needs
@@ -130,14 +123,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: colors.whitecolor,
                 ),
                 SizedBox(height: 4),
-            Text(
-              _isCheckedIn ? 'Logout' : 'Login',
-              style: TextStyle(
-                color: colors.whitecolor,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            )
+                Text(
+                  _isCheckedIn ? 'Logout' : 'Login',
+                  style: TextStyle(
+                    color: colors.whitecolor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                )
               ],
             ),
           ),

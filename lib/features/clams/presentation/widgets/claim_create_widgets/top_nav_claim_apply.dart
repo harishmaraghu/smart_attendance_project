@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:smart_attendance_project/core/constants/app_text.dart';
 import 'package:smart_attendance_project/features/clams/presentation/pages/claims_create.dart';
-import 'package:smart_attendance_project/features/leave/presentation/pages/leave_history/leave_record.dart';
-import 'package:smart_attendance_project/features/leave/presentation/pages/leaveapply/leave_apply_screen.dart';
+import 'package:smart_attendance_project/features/history_claim/presentation/screens/claim_history_screen.dart';
+// import 'package:smart_attendance_project/features/leave/presentation/pages/leave_history/leave_record.dart';
+// import 'package:smart_attendance_project/features/leave/presentation/pages/leaveapply/leave_apply_screen.dart';
 import '../../../../../core/constants/app_colors.dart';
-import '../../../../attendance/presentation/pages/attendance_history.dart';
-import '../../../../payment/presentation/pages/payment_history.dart';
 
 class TopDashboardHeaderinClaimApply extends StatelessWidget {
   final colors = AppColors();
-  final String username ="Harishma";
+  final String userId;
+  final String userName;
+
+   TopDashboardHeaderinClaimApply({
+    required this.userId,
+    required this.userName,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +42,9 @@ class TopDashboardHeaderinClaimApply extends StatelessWidget {
         children: [
           // Top row with menu and notification
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Menu Icon with PopupMenu
+              // Back Icon
               GestureDetector(
                 onTap: () => Navigator.pop(context),
                 child: Image.asset(
@@ -47,12 +53,26 @@ class TopDashboardHeaderinClaimApply extends StatelessWidget {
                   height: screenWidth * 0.10,
                 ),
               ),
-              Text('Create Claim',style: AppTextstyle.normal_text_2),
 
+              // Title (Centered-ish)
+              Text(
+                'Create Claim',
+                style: AppTextstyle.normal_text_2,
+              ),
 
-
+              // History Button/Icon (You can replace with Icon or Image as needed)
+              GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClaimHistoryScreen(userId: userId),
+                  ),
+                ),
+                child: Icon(Icons.history), // or use Image.asset() for custom icon
+              ),
             ],
           ),
+
         ],
       ),
     );

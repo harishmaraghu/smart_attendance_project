@@ -7,8 +7,8 @@ import '../../data/models/attendance_record_model.dart';
 import '../../data/repositories/attendance_repository_impl.dart';
 
 class AttendanceHistory extends StatefulWidget {
-  final String username;
-  const AttendanceHistory({super.key, required this.username});
+  final String Userid;
+  const AttendanceHistory({super.key, required this.Userid});
 
   @override
   State<AttendanceHistory> createState() => _AttendanceHistoryState();
@@ -38,11 +38,21 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
     });
 
     try {
-      // Call API to get records
-      _attendanceRecords = _attendanceRepository.getAttendanceRecords(
-        widget.username,
-        selectedDate,
-      );
+      // // Call API - if date is selected, pass both userId and date, otherwise just userId
+      if (selectedDate != null) {
+        _attendanceRecords = _attendanceRepository.getAttendanceemployeeByDate(
+            widget.Userid,
+            selectedDate!
+        );
+      } else {
+        _attendanceRecords = _attendanceRepository.getAttendanceemployee(
+            widget.Userid
+        );
+      }
+
+      // _attendanceRecords = _attendanceRepository.getAttendanceemployee(
+      //          widget.userid,
+      // );
 
       // Wait for future to complete to catch any errors
       await _attendanceRecords;
@@ -62,6 +72,11 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
     return _utility.formatDisplayDate(date);
   }
 
+  // Format date for API (YYYY-MM-DD)
+  String formatDateForApi(DateTime date) {
+    return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+  }
+
   // Open Date Picker
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -78,6 +93,14 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
       // Reload data with the new date
       _loadAttendanceData();
     }
+  }
+
+  // Clear date filter
+  void _clearDateFilter() {
+    setState(() {
+      selectedDate = null;
+    });
+    _loadAttendanceData();
   }
 
   @override
@@ -144,12 +167,22 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
               ],
             ),
           ),
-          if (_isLoading)
-            const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
+          Row(
+            children: [
+              if (selectedDate != null)
+                IconButton(
+                  onPressed: _clearDateFilter,
+                  icon: const Icon(Icons.clear, color: Colors.red),
+                  tooltip: "Clear date filter",
+                ),
+              if (_isLoading)
+                const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+            ],
+          ),
         ],
       ),
     );

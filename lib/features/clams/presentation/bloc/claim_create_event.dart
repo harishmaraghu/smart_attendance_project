@@ -27,9 +27,27 @@ class ClaimableAmountChanged extends ClaimCreateEvent {
   ClaimableAmountChanged(this.claimableAmount);
 }
 
-class AttachmentAdded extends ClaimCreateEvent {
-  final File attachment;
-  AttachmentAdded(this.attachment);
+class ClaimAttachmentChanged extends ClaimCreateEvent {
+  final File file;
+  ClaimAttachmentChanged(this.file);
 }
 
+
 class SubmitClaimForm extends ClaimCreateEvent {}
+
+class ResetForm extends ClaimCreateEvent {}
+
+class ClearError extends ClaimCreateEvent {}
+
+
+/////////////////////////ClaimHistoryEvent based bloc//////////////////////
+
+// claim_history_event.dart
+// abstract class ClaimHistoryEvent {}
+//
+// class FetchClaimHistory extends ClaimHistoryEvent {
+//   final String userId;
+//   FetchClaimHistory(this.userId);
+// }
+
+

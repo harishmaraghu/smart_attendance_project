@@ -1,0 +1,47 @@
+class LeaveDashboardModel {
+  final String userId;
+  final String name;
+  final int totalAnnualLeave;
+  final int usedAnnualLeave;
+  final int remainingAnnualLeave;
+  final int totalSickLeave;
+  final int usedSickLeave;
+  final int remainingSickLeave;
+
+  LeaveDashboardModel({
+    required this.userId,
+    required this.name,
+    required this.totalAnnualLeave,
+    required this.usedAnnualLeave,
+    required this.remainingAnnualLeave,
+    required this.totalSickLeave,
+    required this.usedSickLeave,
+    required this.remainingSickLeave,
+  });
+
+  factory LeaveDashboardModel.fromJson(Map<String, dynamic> json) {
+    return LeaveDashboardModel(
+      userId: json['Userid'] ?? '',
+      name: json['Name'] ?? '',
+      totalAnnualLeave: json['TotalAnnualLeave'] ?? 0,
+      usedAnnualLeave: json['UsedAnnualleave'] ?? 0,
+      remainingAnnualLeave: json['RemaningAnnualLeave'] ?? 0,
+      totalSickLeave: json['TotalSickLeave'] ?? 0,
+      usedSickLeave: json['UsedSickLeave'] ?? 0,
+      remainingSickLeave: json['RemaningSickLeave'] ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Userid': userId,
+      'Name': name,
+      'TotalAnnualLeave': totalAnnualLeave,
+      'UsedAnnualleave': usedAnnualLeave,
+      'RemaningAnnualLeave': remainingAnnualLeave,
+      'TotalSickLeave': totalSickLeave,
+      'UsedSickLeave': usedSickLeave,
+      'RemaningSickLeave': remainingSickLeave,
+    };
+  }
+}

@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:smart_attendance_project/core/constants/shared_prefsHelper.dart';
 import 'package:smart_attendance_project/features/clams/presentation/pages/claims_create.dart';
-import 'package:smart_attendance_project/features/leave/presentation/pages/leave_history/leave_record.dart';
+// import 'package:smart_attendance_project/features/leave/presentation/pages/leave_history/leave_record.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../attendance/presentation/pages/attendance_history.dart';
-import '../../../payment/presentation/pages/payment_history.dart';
 
-class TopDashboardHeaderinAttendance extends StatelessWidget {
+
+class TopDashboardHeaderinAttendance extends StatefulWidget {
+  @override
+  State<TopDashboardHeaderinAttendance> createState() => _TopDashboardHeaderinAttendanceState();
+}
+
+class _TopDashboardHeaderinAttendanceState extends State<TopDashboardHeaderinAttendance> {
   final colors = AppColors();
-  final String username ="Harishma";
+  String username = 'User';
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return Container  (
+    return Container (
       width: double.infinity,
       padding: EdgeInsets.only(
         top: screenHeight * 0.04,

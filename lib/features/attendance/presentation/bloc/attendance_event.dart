@@ -6,3 +6,14 @@ class FetchAttendance extends AttendanceEvent {
 
   FetchAttendance(this.username, this.date);
 }
+
+
+
+
+
+// attendances
+// user_bloc_event.dart
+abstract class UserEvent {}
+
+class LoadUsernameEvent extends UserEvent {}
+

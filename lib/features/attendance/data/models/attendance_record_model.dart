@@ -1,93 +1,62 @@
 class AttendanceRecord {
   final DateTime date;
-  final String name;
   final String? inTime;
   final String? outTime;
-  String? totalHours;
-  String status;
+  final String status;
+  final String name;
+  final String? totalHours;
 
   AttendanceRecord({
     required this.date,
-    required this.name,
     this.inTime,
     this.outTime,
-    this.totalHours,
     required this.status,
+    required this.name,
+    this.totalHours,
   });
 
   factory AttendanceRecord.fromJson(Map<String, dynamic> json) {
-    // Parse date from string
-    final DateTime parsedDate = DateTime.parse(json['date']);
+    final inTime = json['inTime'];
+    final outTime = json['outTime'];
 
-    // Default status is absent, will be updated based on inTime/outTime
-    String status = 'Absent';
-
-    // Determine status - Present if at least inTime or outTime exists
-    if (json['inTime'] != null && json['inTime'].toString().isNotEmpty) {
-      status = 'Present';
-    } else if (json['outTime'] != null && json['outTime'].toString().isNotEmpty) {
-      status = 'Present';
-    }
-
-    // Create record with basic information from API
-    final record = AttendanceRecord(
-      date: parsedDate,
-      name: json['name'] ?? '',
-      inTime: json['inTime'],
-      outTime: json['outTime'],
-      totalHours: null, // Will be calculated after initialization
-      status: status,
+    return AttendanceRecord(
+      date: DateTime.parse(json['date']),
+      inTime: inTime,
+      outTime: outTime,
+      status: (inTime != null && outTime != null) ? "Present" : "Absent",
+      name: json['name'] ?? "demo", // Use actual name from JSON or fallback
+      totalHours: _calculateTotalHours(inTime, outTime),
     );
-
-    // Calculate total hours
-    record.calculateTotalHours();
-
-    return record;
   }
 
-  // Calculate total hours if both inTime and outTime are available
-  void calculateTotalHours() {
-    if (inTime != null && inTime!.isNotEmpty &&
-        outTime != null && outTime!.isNotEmpty) {
-      try {
-        // Parse the time strings
-        final inTimeParts = inTime!.split(':');
-        final outTimeParts = outTime!.split(':');
+  static String? _calculateTotalHours(String? inTime, String? outTime) {
+    if (inTime == null || outTime == null) return null;
 
-        if (inTimeParts.length == 2 && outTimeParts.length == 2) {
-          final inDateTime = DateTime(
-              date.year,
-              date.month,
-              date.day,
-              int.parse(inTimeParts[0]),
-              int.parse(inTimeParts[1])
-          );
+    try {
+      final inParts = inTime.split(":").map(int.parse).toList();
+      final outParts = outTime.split(":").map(int.parse).toList();
 
-          final outDateTime = DateTime(
-              date.year,
-              date.month,
-              date.day,
-              int.parse(outTimeParts[0]),
-              int.parse(outTimeParts[1])
-          );
+      final inDateTime = DateTime(0, 1, 1, inParts[0], inParts[1]);
+      final outDateTime = DateTime(0, 1, 1, outParts[0], outParts[1]);
 
-          // Handle case where checkout is next day
-          final Duration difference = outDateTime.isAfter(inDateTime)
-              ? outDateTime.difference(inDateTime)
-              : outDateTime.add(const Duration(days: 1)).difference(inDateTime);
+      final duration = outDateTime.difference(inDateTime);
 
-          final hours = difference.inHours;
-          final minutes = (difference.inMinutes % 60);
-
-          totalHours = "${hours}hr ${minutes > 0 ? '${minutes}min' : ''}";
-        } else {
-          totalHours = "N/A";
-        }
-      } catch (e) {
-        totalHours = "N/A";
+      // Handle case where checkout is next day (negative duration)
+      if (duration.isNegative) {
+        final nextDayOutDateTime = DateTime(0, 1, 2, outParts[0], outParts[1]);
+        final correctedDuration = nextDayOutDateTime.difference(inDateTime);
+        return "${correctedDuration.inHours}h ${correctedDuration.inMinutes % 60}m";
       }
-    } else {
-      totalHours = "N/A";
+
+      return "${duration.inHours}h ${duration.inMinutes % 60}m";
+    } catch (e) {
+      print('Error calculating total hours: $e');
+      return null;
     }
+  }
+
+  @override
+  String toString() {
+    return 'AttendanceRecord(date: $date, inTime: $inTime, outTime: $outTime, status: $status, name: $name, totalHours: $totalHours)';
   }
 }

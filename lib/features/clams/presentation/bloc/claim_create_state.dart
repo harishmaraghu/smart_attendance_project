@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import '../../data/models/claim_history_model.dart';
+
 class ClaimCreateState {
   final String? claimGroup;
   final String? claimName;
@@ -10,6 +12,7 @@ class ClaimCreateState {
   final bool isSubmitting;
   final bool isSuccess;
   final String? errorMessage;
+  final bool isLoading;
 
   ClaimCreateState({
     this.claimGroup,
@@ -21,6 +24,7 @@ class ClaimCreateState {
     this.isSubmitting = false,
     this.isSuccess = false,
     this.errorMessage,
+    this.isLoading = false,
   });
 
   ClaimCreateState copyWith({
@@ -44,6 +48,27 @@ class ClaimCreateState {
       isSubmitting: isSubmitting ?? this.isSubmitting,
       isSuccess: isSuccess ?? this.isSuccess,
       errorMessage: errorMessage,
+
     );
   }
 }
+
+
+///////////////////////ClaimHistoryEvent based bloc////////////////////////
+//
+// // claim_history_state.dart
+// abstract class ClaimHistoryState {}
+//
+// class ClaimHistoryInitial extends ClaimHistoryState {}
+//
+// class ClaimHistoryLoading extends ClaimHistoryState {}
+//
+// class ClaimHistoryLoaded extends ClaimHistoryState {
+//   final List<ClaimHistoryModel> claims;
+//   ClaimHistoryLoaded(this.claims);
+// }
+//
+// class ClaimHistoryError extends ClaimHistoryState {
+//   final String message;
+//   ClaimHistoryError(this.message);
+// }
