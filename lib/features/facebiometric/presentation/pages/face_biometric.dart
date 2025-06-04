@@ -55,6 +55,9 @@ class _FaceBiometricState extends State<FaceBiometric> {
   }
 
 
+
+
+
   void _proceedToLocation() {
     if (_image != null) {
       Navigator.push(
