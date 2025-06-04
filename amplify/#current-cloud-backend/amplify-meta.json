@@ -1,0 +1,76 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-smartattendanceproje-dev-2b766-authRole",
+      "UnauthRoleArn": "arn:aws:iam::749187906455:role/amplify-smartattendanceproje-dev-2b766-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::749187906455:role/amplify-smartattendanceproje-dev-2b766-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-smartattendanceproje-dev-2b766-deployment",
+      "UnauthRoleName": "amplify-smartattendanceproje-dev-2b766-unauthRole",
+      "StackName": "amplify-smartattendanceproje-dev-2b766",
+      "StackId": "arn:aws:cloudformation:ap-south-1:749187906455:stack/amplify-smartattendanceproje-dev-2b766/b80c8640-3890-11f0-970e-069d6f5f61c1",
+      "AmplifyAppId": "d3bii4vuhestm6"
+    }
+  },
+  "auth": {
+    "smartattendanceproje2e49ad32": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "PHONE_NUMBER"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-smartattendanceproje-dev-2b766-deployment/amplify-cfn-templates/auth/smartattendanceproje2e49ad32-cloudformation-template.json",
+        "logicalId": "authsmartattendanceproje2e49ad32"
+      },
+      "lastPushTimeStamp": "2025-05-24T11:23:39.348Z",
+      "output": {
+        "CreatedSNSRole": "arn:aws:iam::749187906455:role/sns2e49ad322b766-dev",
+        "UserPoolId": "ap-south-1_ODAx0OgF6",
+        "AppClientIDWeb": "1n21hgf8o6m5e7blng7rpcbjrh",
+        "AppClientID": "75v44mhlluauohvme5rq22t876",
+        "IdentityPoolId": "ap-south-1:eaf3906f-e33f-4a67-b27e-a72f2308a3bf",
+        "UserPoolArn": "arn:aws:cognito-idp:ap-south-1:749187906455:userpool/ap-south-1_ODAx0OgF6",
+        "IdentityPoolName": "smartattendanceproje2e49ad32_identitypool_2e49ad32__dev",
+        "UserPoolName": "smartattendanceproje2e49ad32_userpool_2e49ad32"
+      },
+      "lastPushDirHash": "SBqtLzzh9JpT6DE+5NKGkqlVJWw="
+    }
+  },
+  "storage": {
+    "s394662d85": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "lastPushTimeStamp": "2025-05-24T11:23:39.348Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-smartattendanceproje-dev-2b766-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storages394662d85"
+      },
+      "output": {
+        "BucketName": "smartattendanceproje63c9c38d5737442bb519faa59f42b766-dev",
+        "Region": "ap-south-1"
+      },
+      "lastPushDirHash": "C3C9FjkW9GbjsLbctNxbwF7P2AM="
+    }
+  }
+}
