@@ -4,12 +4,15 @@ class DateSelectorField extends StatelessWidget {
   final String title;
   final DateTime? selectedDate;
   final VoidCallback onTap;
+  final TextStyle? titleTextStyle;
+
 
   const DateSelectorField({
     super.key,
     required this.title,
     required this.selectedDate,
     required this.onTap,
+    this.titleTextStyle,
   });
 
   String _formatDate(DateTime? date) {

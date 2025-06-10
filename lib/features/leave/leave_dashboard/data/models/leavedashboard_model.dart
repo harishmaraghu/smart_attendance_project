@@ -24,11 +24,11 @@ class LeaveDashboardModel {
       userId: json['Userid'] ?? '',
       name: json['Name'] ?? '',
       totalAnnualLeave: json['TotalAnnualLeave'] ?? 0,
-      usedAnnualLeave: json['UsedAnnualleave'] ?? 0,
-      remainingAnnualLeave: json['RemaningAnnualLeave'] ?? 0,
+      usedAnnualLeave: json['UsedAnnualLeave'] ?? 0,
+      remainingAnnualLeave: json['RemainingAnnualLeave'] ?? 0,
       totalSickLeave: json['TotalSickLeave'] ?? 0,
       usedSickLeave: json['UsedSickLeave'] ?? 0,
-      remainingSickLeave: json['RemaningSickLeave'] ?? 0,
+      remainingSickLeave: json['RemainingSickLeave'] ?? 0,
     );
   }
 
@@ -37,11 +37,11 @@ class LeaveDashboardModel {
       'Userid': userId,
       'Name': name,
       'TotalAnnualLeave': totalAnnualLeave,
-      'UsedAnnualleave': usedAnnualLeave,
-      'RemaningAnnualLeave': remainingAnnualLeave,
+      'UsedAnnualLeave': usedAnnualLeave,
+      'RemainingAnnualLeave': remainingAnnualLeave,
       'TotalSickLeave': totalSickLeave,
       'UsedSickLeave': usedSickLeave,
-      'RemaningSickLeave': remainingSickLeave,
+      'RemainingSickLeave': remainingSickLeave,
     };
   }
 }

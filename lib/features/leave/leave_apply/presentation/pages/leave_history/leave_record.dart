@@ -50,12 +50,12 @@ class _LeaveHistoryState extends State<LeaveHistory> with SingleTickerProviderSt
   Color getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'approved':
-        return Colors.green;
+        return AppColors().success_color;
       case 'rejected':
-        return Colors.red;
+        return AppColors().rejected_color;
       case 'inprogress':
       case 'process':
-        return Colors.blue;
+        return AppColors().form_bg_color;
       default:
         return Colors.grey;
     }
@@ -76,11 +76,13 @@ class _LeaveHistoryState extends State<LeaveHistory> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final textScale = MediaQuery.textScaleFactorOf(context);
     final selectedStatus = getSelectedStatus();
+
     final filteredData = selectedStatus == 'All'
         ? leaveData
         : leaveData.where((item) => item.status.toLowerCase() == selectedStatus.toLowerCase()).toList();
-
 
     return Scaffold(
       backgroundColor: AppColors().whitecolor,
@@ -88,8 +90,13 @@ class _LeaveHistoryState extends State<LeaveHistory> with SingleTickerProviderSt
         child: Column(
           children: [
             TopDashboardHeaderinLeave(),
+
+            // Tab bar with responsive margins
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              margin: EdgeInsets.symmetric(
+                horizontal: screenSize.width * 0.02,
+                vertical: screenSize.height * 0.015,
+              ),
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 color: AppColors().whitecolor,
@@ -98,7 +105,7 @@ class _LeaveHistoryState extends State<LeaveHistory> with SingleTickerProviderSt
               child: TabBar(
                 controller: _tabController,
                 isScrollable: false,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 12),
+                labelPadding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.black,
                 indicator: BoxDecoration(
@@ -115,22 +122,26 @@ class _LeaveHistoryState extends State<LeaveHistory> with SingleTickerProviderSt
                 ],
               ),
             ),
+
+            // Content loader or list
             isLoading
                 ? const Expanded(child: Center(child: CircularProgressIndicator()))
                 : Expanded(
               child: filteredData.isEmpty
                   ? const Center(child: Text("No records found"))
                   : ListView.builder(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(screenSize.width * 0.03),
                 itemCount: filteredData.length,
                 itemBuilder: (context, index) {
                   final item = filteredData[index];
                   return leaveCard(
+                    screenSize,
                     item.title,
                     item.fromDate,
                     item.toDate,
                     item.status,
                     getStatusColor(item.status),
+                    textScale,
                   );
                 },
               ),
@@ -142,18 +153,19 @@ class _LeaveHistoryState extends State<LeaveHistory> with SingleTickerProviderSt
   }
 }
 
-Widget leaveCard(String title, String fromDate, String toDate, String status, Color statusColor) {
+
+Widget leaveCard(Size screenSize, String title, String fromDate, String toDate, String status, Color statusColor, double textScale) {
   return Container(
-    margin: const EdgeInsets.symmetric(vertical: 10),
+    margin: EdgeInsets.symmetric(vertical: screenSize.height * 0.012),
     decoration: BoxDecoration(
-      color: AppColors().card_background_color,
+      color: Colors.white70,
       borderRadius: BorderRadius.circular(12),
     ),
     child: Row(
       children: [
         Container(
           width: 10,
-          height: 80,
+          height: screenSize.height * 0.1,
           decoration: BoxDecoration(
             color: statusColor,
             borderRadius: const BorderRadius.only(
@@ -164,15 +176,39 @@ Widget leaveCard(String title, String fromDate, String toDate, String status, Co
         ),
         Expanded(
           child: ListTile(
-            title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text("From $fromDate  To $toDate"),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: screenSize.width * 0.04,
+              vertical: screenSize.height * 0.01,
+            ),
+            title: Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: screenSize.width * 0.045 * textScale,
+              ),
+            ),
+            subtitle: Text(
+              "From $fromDate  To $toDate",
+              style: TextStyle(
+                fontSize: screenSize.width * 0.038 * textScale,
+              ),
+            ),
             trailing: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: EdgeInsets.symmetric(
+                horizontal: screenSize.width * 0.03,
+                vertical: screenSize.height * 0.005,
+              ),
               decoration: BoxDecoration(
                 color: statusColor,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(50),
               ),
-              child: Text(status, style: const TextStyle(color: Colors.white)),
+              child: Text(
+                status,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: screenSize.width * 0.035 * textScale,
+                ),
+              ),
             ),
           ),
         ),

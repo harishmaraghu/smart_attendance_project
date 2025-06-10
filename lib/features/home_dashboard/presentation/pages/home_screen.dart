@@ -11,8 +11,11 @@ class HomeScreen extends StatefulWidget {
   final bool isCheckedIn;
   final String username;
 
-  const HomeScreen({super.key,required this.username ,this.isCheckedIn = false});
-
+  const HomeScreen({
+    super.key,
+    required this.username,
+    this.isCheckedIn = false,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -24,7 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   late bool _isCheckedIn;
 
-
   @override
   void initState() {
     super.initState();
@@ -33,47 +35,59 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _toggleCheckInStatus() {
-    // User is checking out, navigate to LocationScreen
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const FaceBiometric()),
     );
   }
 
-
-  // Load username from SharedPreferences or use passed username
   Future<void> _loadUsername() async {
     try {
       final savedUsername = await SharedPrefsHelper.getUsername();
       setState(() {
-        displayUsername = savedUsername.isNotEmpty ? savedUsername : widget.username;
+        displayUsername =
+        savedUsername.isNotEmpty ? savedUsername : widget.username;
       });
     } catch (e) {
       setState(() {
-        displayUsername = widget.username; // Fallback to passed username
+        displayUsername = widget.username;
       });
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    return Scaffold(
+    final textScale = MediaQuery.textScaleFactorOf(context);
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
+    return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            // Top blue container with greeting and icons
-            TopDashboardHeader(username: displayUsername.isNotEmpty ? displayUsername : widget.username),
-
-            // Body content (can be added below)
+            TopDashboardHeader(
+              username: displayUsername.isNotEmpty
+                  ? displayUsername
+                  : widget.username,
+            ),
+            const SizedBox(height: 10),
             Expanded(
               child: Container(
+                width: double.infinity,
                 color: colors.whitecolor,
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenSize.width * 0.05,
+                ),
                 child: Center(
-                  child: Text("Main content here"),
+                  child: Text(
+                    "Main content here",
+                    style: TextStyle(
+                      fontSize: screenSize.width * 0.045 * textScale,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -81,64 +95,64 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
 
-    //Bottom navigation
+      // Floating Action Button (Login/Logout)
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
-        height: 80, // Adjust the height as per your design needs
-        width: 100, // Set the width of the button
+        height: screenSize.height * 0.10,
+        width: screenSize.width * 0.24,
         decoration: BoxDecoration(
           color: colors.backgroundcolor,
-          borderRadius: BorderRadius.circular(25), // Rounded corners
+          borderRadius: BorderRadius.circular(25),
           boxShadow: [
             BoxShadow(
-              color: colors.backgroundcolor.withAlpha((255 * 0.4).toInt()), // 40% opacity shadow
+              color: colors.backgroundcolor.withOpacity(0.4),
               blurRadius: 4,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         child: Material(
-          color: colors.backgroundcolor, // Set the background color for the Material widget
+          color: colors.backgroundcolor,
           borderRadius: BorderRadius.circular(25),
           child: InkWell(
             onTap: () {
               if (_isCheckedIn) {
-                // Handle logout (checkout)
                 _toggleCheckInStatus();
               } else {
-                // Go to face biometric login
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FaceBiometric()),
+                  MaterialPageRoute(builder: (context) => const FaceBiometric()),
                 );
               }
             },
-            borderRadius: BorderRadius.circular(40),
+            borderRadius: BorderRadius.circular(70),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.emoji_emotions_outlined,
-                  size: 30, // Adjust the icon size as needed
+                  size: screenSize.width * 0.08,
                   color: colors.whitecolor,
                 ),
-                SizedBox(height: 4),
-            Text(
-              _isCheckedIn ? 'Logout' : 'Login',
-              style: TextStyle(
-                color: colors.whitecolor,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            )
+                const SizedBox(height: 4),
+                Text(
+                  _isCheckedIn ? 'Logout' : 'Login',
+                  style: TextStyle(
+                    color: colors.whitecolor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: screenSize.width * 0.04 * textScale,
+                  ),
+                ),
               ],
             ),
           ),
         ),
       ),
+
+      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavBar(
         onFabPressed: () {
-          // Optional if FAB inside nav widget
+          // Optional
         },
         onTabSelected: (index) {
           setState(() {
@@ -147,9 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         selectedIndex: _selectedIndex,
       ),
-
     );
   }
-
-
 }

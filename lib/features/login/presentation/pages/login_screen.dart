@@ -102,8 +102,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final double logoHorizontalPadding = screenWidth * 0.1;
     final double contentPadding = screenWidth * 0.05;
 
-
-
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -125,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Center(
                   child: Image.asset(
                     'assets/images/logo.png',
-                    width: 300, // optional
+                    width: 200, // optional
                     height: 150, // optional
                     fit: BoxFit.contain, // or cover
                   ),

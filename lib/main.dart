@@ -8,6 +8,7 @@ import 'package:smart_attendance_project/features/attendance/presentation/pages/
 
 import 'package:smart_attendance_project/features/location/presentation/pages/splash_screen_2.dart';
 import 'package:smart_attendance_project/features/login/presentation/pages/login_screen.dart';
+import 'package:smart_attendance_project/features/splashscreens/first_screen.dart';
 
 import 'amplifyconfiguration.dart';
 import 'features/clams/presentation/pages/claim_history.dart';
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Smart Attendance',
-        home: const LoginScreen(),
+        home: const FirstScreen(),
       ),
     );
   }

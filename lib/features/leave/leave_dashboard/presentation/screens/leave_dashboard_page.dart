@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_attendance_project/core/constants/app_colors.dart';
+import 'package:smart_attendance_project/core/constants/app_text.dart';
 import 'package:smart_attendance_project/features/leave/leave_apply/presentation/pages/leave_history/leave_record.dart';
 import 'package:smart_attendance_project/features/leave/leave_dashboard/data/models/leavedashboard_model.dart';
 import 'package:smart_attendance_project/features/leave/leave_dashboard/presentation/bloc/leave_dash_bloc.dart';
@@ -20,17 +22,21 @@ class LeaveDashboardPage extends StatefulWidget {
 }
 
 class _LeaveDashboardPageState extends State<LeaveDashboardPage> {
+
   @override
   void initState() {
     super.initState();
-    // Load dashboard data when page initializes
-    context.read<LeaveDashboardBloc>().add(
-      LoadLeaveDashboard(
-        userId:widget.Userid, // Replace with actual user ID
-        name: widget.username, // Replace with actual name
-      ),
-    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<LeaveDashboardBloc>().add(
+        LoadLeaveDashboard(
+          userId: widget.Userid,
+          name: widget.username,
+        ),
+      );
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +96,8 @@ class _LeaveDashboardPageState extends State<LeaveDashboardPage> {
           width: double.infinity,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.blue[50],
+            // color: Colors.blue[50],
+            color: Colors.white70,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -98,11 +105,7 @@ class _LeaveDashboardPageState extends State<LeaveDashboardPage> {
             children: [
               Text(
                 'Overall Leave Details',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[800],
-                ),
+                style: AppTextstyle.heading_text_bold,
               ),
               const SizedBox(height: 8),
               Text(
@@ -126,14 +129,14 @@ class _LeaveDashboardPageState extends State<LeaveDashboardPage> {
               title: 'Total Annual\nLeave',
               count: dashboard.totalAnnualLeave.toString().padLeft(2, '0'),
               subtitle: '',
-              backgroundColor: Colors.blue[600]!,
+              backgroundColor: AppColors().leave_dashboard_card_1_color,
             ),
             LeaveCardWidget(
               title: 'Leave Taken',
               count: dashboard.usedAnnualLeave.toString().padLeft(2, '0'),
               subtitle: 'Balance Leave ${dashboard.remainingAnnualLeave.toString().padLeft(2, '0')}',
-              backgroundColor: Colors.blue[200]!,
-              textColor: Colors.blue[800]!,
+              backgroundColor: AppColors().leave_dashboard_card_2_color,
+              textColor: AppColors().leave_dashboard_card_1_color,
             ),
           ],
         ),
@@ -147,13 +150,13 @@ class _LeaveDashboardPageState extends State<LeaveDashboardPage> {
               title: 'Total Sick\nLeave',
               count: dashboard.totalSickLeave.toString().padLeft(2, '0'),
               subtitle: '',
-              backgroundColor: Colors.blue[800]!,
+              backgroundColor:AppColors().leave_dashboard_card_3_color,
             ),
             LeaveCardWidget(
               title: 'Leave Taken',
               count: dashboard.usedSickLeave.toString().padLeft(2, '0'),
               subtitle: 'Balance Leave ${dashboard.remainingSickLeave.toString().padLeft(2, '0')}',
-              backgroundColor: Colors.blue[400]!,
+              backgroundColor: AppColors().leave_dashboard_card_4_color,
             ),
           ],
         ),
@@ -179,11 +182,11 @@ class _LeaveDashboardPageState extends State<LeaveDashboardPage> {
             },
 
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue[400],
+              backgroundColor: AppColors().leave_dashboard_card_2_color,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(15),
               ),
               elevation: 2,
             ),

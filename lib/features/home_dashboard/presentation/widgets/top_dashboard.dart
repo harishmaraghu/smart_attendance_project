@@ -286,14 +286,18 @@ class _TopDashboardHeaderState extends State<TopDashboardHeader> {
                       );
                     },
                     child: Container(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Icon(Icons.notifications_none,
-                          color: AppColors().dashboard_icon_color, size: 22),
+                      child: Icon(
+                        Icons.notifications, // This is the filled version
+                        color: AppColors().dashboard_icon_color,
+                        size: 22,
+                      ),
                     ),
+
                   ),
                 ],
               ),
@@ -342,10 +346,10 @@ class _TopDashboardHeaderState extends State<TopDashboardHeader> {
 
               // Floating white card with icons
               Container(
-                padding: EdgeInsets.symmetric(vertical: 16),
+                padding: EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(18),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.05),
@@ -448,30 +452,46 @@ class _TopDashboardHeaderState extends State<TopDashboardHeader> {
     );
   }
 
-  Widget _buildIcon(IconData icon, String label,VoidCallback onTap) {
+  Widget _buildIcon(IconData icon, String label, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
-      child: Column( children: [
-        CircleAvatar(
-          radius: 15,
-          backgroundColor: AppColors().dashboard_icon_background, // A subtle color, e.g., light grey or blue tint
-          child: Icon(
-            icon,
-            color: colors.dashboard_icon_color, // Use your defined dashboard icon color
-            size: 23,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: Colors.white, // Outer box color
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withOpacity(0.3), // glow-like shadow
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: CircleAvatar(
+              radius: 16,
+              backgroundColor: AppColors().dashboard_icon_background, // Blue fill
+              child: Icon(
+                icon,
+                color: Color(0xff2478AA), // Icon color (white on blue)
+                size: 22,
+              ),
+            ),
           ),
-        ),
-        SizedBox(height: 8),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: Colors.black87,
+            ),
           ),
-        ),
-      ],),
-
+        ],
+      ),
     );
   }
+
 }

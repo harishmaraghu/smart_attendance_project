@@ -15,13 +15,13 @@ class TopDashboardHeaderinleavedashboard extends StatefulWidget {
   });
 
   @override
-  State<TopDashboardHeaderinleavedashboard> createState() => _TopDashboardHeaderinAttendanceState();
+  State<TopDashboardHeaderinleavedashboard> createState() => _TopDashboardHeaderinleavedashboard();
 }
 
 
-class _TopDashboardHeaderinAttendanceState extends State<TopDashboardHeaderinleavedashboard> {
+class _TopDashboardHeaderinleavedashboard extends State<TopDashboardHeaderinleavedashboard> {
   final colors = AppColors();
-  String username = 'User';
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +50,25 @@ class _TopDashboardHeaderinAttendanceState extends State<TopDashboardHeaderinlea
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Menu Icon with PopupMenu
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Image.asset(
-                  'assets/icons/back_icon.png',
-                  width: screenWidth * 0.10,
-                  height: screenWidth * 0.10,
-                ),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Image.asset(
+                      'assets/icons/back_icon.png',
+                      width: screenWidth * 0.08,
+                      height: screenWidth * 0.08,
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    "Filter",
+                    style: AppTextstyle.heading_text.copyWith(
+                      fontSize: 18,
+
+                    ),
+                  ),
+                ],
               ),
               GestureDetector(
                 onTap: () {
@@ -71,18 +82,18 @@ class _TopDashboardHeaderinAttendanceState extends State<TopDashboardHeaderinlea
                     ),
                   );
                 },
-
                 child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text("Leave apply",style: AppTextstyle.pragra_text,)
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text("Apply Leave", style: AppTextstyle.pragra_text),
                 ),
               ),
             ],
           ),
+
         ],
       ),
     );
