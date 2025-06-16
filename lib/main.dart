@@ -11,7 +11,7 @@ import 'package:smart_attendance_project/features/login/presentation/pages/login
 import 'package:smart_attendance_project/features/splashscreens/first_screen.dart';
 
 import 'amplifyconfiguration.dart';
-import 'features/clams/presentation/pages/claim_history.dart';
+
 import 'features/clams/presentation/pages/claims_create.dart';
 import 'features/facebiometric/presentation/pages/face_biometric.dart';
 import 'features/home_dashboard/presentation/bloc/hoembloc.dart';

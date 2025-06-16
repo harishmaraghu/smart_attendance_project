@@ -128,7 +128,7 @@ class AppTextstyle {
    static final form_input_text_bold=TextStyle(color: Colors.grey);
 
 //    Clim Create form
-    static final claim_form_heading_text=TextStyle(color: Colors.grey,fontSize: 14);
+    static final claim_form_heading_text=TextStyle(color: Colors.grey,fontSize: 14,fontWeight: FontWeight.w300);
 
 
 //     top navbar heading text

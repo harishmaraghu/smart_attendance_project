@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_attendance_project/core/constants/shared_prefsHelper.dart';
+import 'package:smart_attendance_project/features/profile/presentation/screens/profile.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../profile/presentation/screens/profile_page.dart';
 
@@ -14,6 +15,7 @@ class BottomNavBar extends StatelessWidget {
     required this.onFabPressed,
     required this.onTabSelected,
     required this.selectedIndex,
+    required bool showNotch,
   });
 
   @override
@@ -39,21 +41,9 @@ class BottomNavBar extends StatelessWidget {
     final isActive = selectedIndex == index;
 
     return GestureDetector(
-      onTap: () async {
+      onTap: () {
+        // Simply call the callback to switch pages
         onTabSelected(index);
-        if (index == 1) {
-          final userId = await SharedPrefsHelper.getUserId();
-          final username = await SharedPrefsHelper.getUsername();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProfileScreen(
-                userId: userId,
-                username: username,
-              ),
-            ),
-          );
-        }
       },
       child: SizedBox(
         height: 50,
@@ -104,6 +94,4 @@ class BottomNavBar extends StatelessWidget {
       ),
     );
   }
-
-
 }

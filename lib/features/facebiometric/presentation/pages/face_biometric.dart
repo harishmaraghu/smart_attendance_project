@@ -12,7 +12,7 @@ import '../../../location/domain/usecases/get_address_from_coordinates.dart';
 import '../../../location/domain/usecases/get_current_location.dart';
 import '../../../location/presentation/bloc/location_bloc.dart';
 import '../../../location/presentation/bloc/location_event.dart';
-import '../../../location/presentation/pages/location_screen.dart';
+import '../../../location/presentation/pages/location_screen.dart' hide LocationBloc;
 
 class FaceBiometric extends StatefulWidget {
   const FaceBiometric({super.key});
@@ -125,11 +125,24 @@ class _FaceBiometricState extends State<FaceBiometric> {
     return Scaffold(
       backgroundColor: AppColors().backgroundcolor,
       appBar: AppBar(
-        title: const Text("Face Verification"),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Padding(
+            padding: EdgeInsets.all(8.0), // Optional: adds some space around the icon
+            child: Image.asset(
+              'assets/icons/back_icon.png',
+              width: screenWidth * 0.08,
+              height: screenWidth * 0.08,
+            ),
+          ),
+        ),
+        // title: const Text("Face Verification"), // Uncomment if you want a title
       ),
+
+
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -139,7 +152,7 @@ class _FaceBiometricState extends State<FaceBiometric> {
               Text(
                 "Please take a clear photo of your face",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Colors.grey[700],
                 ),
@@ -154,11 +167,11 @@ class _FaceBiometricState extends State<FaceBiometric> {
                     width: screenWidth * 0.5,
                     height: screenWidth * 0.5,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                      shape: BoxShape.rectangle,
                       color: _isProcessing ? Colors.grey.shade200 : Colors.blue.shade100,
                       border: Border.all(
                         color: _isProcessing ? Colors.grey.shade300 : Colors.blue.shade300,
-                        width: 3,
+                        width: 2,
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -220,8 +233,8 @@ class _FaceBiometricState extends State<FaceBiometric> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       ),
                     ),
                     ElevatedButton.icon(
@@ -231,59 +244,59 @@ class _FaceBiometricState extends State<FaceBiometric> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       ),
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 20),
+                // const SizedBox(height: 20),
 
                 // Image info display
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Image captured successfully ✓",
-                        style: TextStyle(
-                          color: Colors.green[700],
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        "File: ${_image!.name}",
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        "Key: $_generatedImageKey",
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.blue[600],
-                          fontWeight: FontWeight.w500,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        "Ready for single upload",
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.blue[600],
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   padding: const EdgeInsets.all(12),
+                //   decoration: BoxDecoration(
+                //     color: Colors.grey[100],
+                //     borderRadius: BorderRadius.circular(10),
+                //   ),
+                //   // child: Column(
+                //   //   children: [
+                //   //     Text(
+                //   //       "Image captured successfully ✓",
+                //   //       style: TextStyle(
+                //   //         color: Colors.green[700],
+                //   //         fontWeight: FontWeight.w500,
+                //   //       ),
+                //   //     ),
+                //   //     const SizedBox(height: 5),
+                //   //     Text(
+                //   //       "File: ${_image!.name}",
+                //   //       style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                //   //       textAlign: TextAlign.center,
+                //   //     ),
+                //   //     const SizedBox(height: 5),
+                //   //     Text(
+                //   //       "Key: $_generatedImageKey",
+                //   //       style: TextStyle(
+                //   //         fontSize: 10,
+                //   //         color: Colors.blue[600],
+                //   //         fontWeight: FontWeight.w500,
+                //   //       ),
+                //   //       textAlign: TextAlign.center,
+                //   //     ),
+                //   //     const SizedBox(height: 5),
+                //   //     Text(
+                //   //       "Ready for single upload",
+                //   //       style: TextStyle(
+                //   //         fontSize: 11,
+                //   //         color: Colors.blue[600],
+                //   //         fontWeight: FontWeight.w500,
+                //   //       ),
+                //   //     ),
+                //   //   ],
+                //   // ),
+                // ),
               ],
 
               const SizedBox(height: 40),
@@ -320,4 +333,6 @@ class _FaceBiometricState extends State<FaceBiometric> {
     );
   }
 }
+
+
 

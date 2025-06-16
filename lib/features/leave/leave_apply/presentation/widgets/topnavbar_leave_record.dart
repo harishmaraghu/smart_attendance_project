@@ -87,7 +87,7 @@ class _TopDashboardHeaderinLeaveState extends State<TopDashboardHeaderinLeave> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context)=>HomeScreen(
-                              username: username ?? 'Guest')));
+                              username: username ?? 'Guest',userId: userId ?? '0',)));
                       },
                     child: Image.asset(
                       'assets/icons/back_icon.png',

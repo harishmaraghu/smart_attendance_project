@@ -83,8 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-
-          TopDashboardProfile(),
+          // TopDashboardProfile(),
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(32),

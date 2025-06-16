@@ -223,6 +223,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<CheckOutPressed>(_onCheckOut);
     on<UploadImageToS3>(_onUploadImageToS3);
     on<RetryImageUpload>(_onRetryImageUpload);
+    on<ResetNavigationState>(_onResetNavigationState);
   }
 
   // ============================================================================
@@ -406,6 +407,13 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     }
   }
 
+  void _onResetNavigationState(ResetNavigationState event, Emitter<LocationState> emit) {
+    emit(state.copyWith(
+      shouldNavigate: false,
+      navigationTimeType: null,
+    ));
+  }
+
   Future<void> _sendCheckEvent({
     required String timeType,
     required Emitter<LocationState> emit,
@@ -475,22 +483,40 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       print("├─ Retry Count: $_uploadRetryCount");
       print("└─ STRATEGY: Single upload, consistent naming");
 
+      // ✅ API call with proper response handling
       await locationRepo.checkInToServer(checkData).timeout(const Duration(seconds: 20));
 
-      print("✅ $timeType API call successful");
+      print("✅ $timeType API call successful - Status 200");
 
+      // ✅ Only emit navigation state on successful API response
       emit(state.copyWith(
         checkInTime: timeType == "inTime" ? now : null,
         checkOutTime: timeType == "outTime" ? now : null,
         error: null,
         isUploadingImage: false,
+        shouldNavigate: true, // ✅ Trigger navigation only on success
+        navigationTimeType: timeType, // ✅ Pass the time type for navigation logic
       ));
 
     } catch (e) {
       print("❌ $timeType error: $e");
+
+      // ✅ Revert local storage changes on API failure
+      if (timeType == "inTime") {
+        await locationRepo.removeCheckInTime(); // Remove the saved check-in time
+      } else {
+        // For check-out failure, restore the check-in time if it existed
+        final existingCheckIn = await locationRepo.getCheckInTime();
+        if (existingCheckIn == null) {
+          await locationRepo.saveCheckInTime(now); // Restore previous state
+        }
+      }
+
       emit(state.copyWith(
         error: "Failed to $timeType: ${e.toString()}",
         isUploadingImage: false,
+        shouldNavigate: false, // ✅ Don't navigate on failure
+        navigationTimeType: null,
       ));
     }
   }

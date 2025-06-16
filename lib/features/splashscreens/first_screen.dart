@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_attendance_project/core/constants/app_colors.dart';
+import 'package:smart_attendance_project/core/constants/shared_prefsHelper.dart';
+import 'package:smart_attendance_project/features/home_dashboard/presentation/pages/home_screen.dart';
 import 'package:smart_attendance_project/features/login/presentation/pages/login_screen.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -10,6 +12,45 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatusAndNavigate();
+  }
+
+  Future<void> _checkLoginStatusAndNavigate() async {
+    // Add a small delay to show splash screen briefly
+    await Future.delayed(const Duration(seconds: 2));
+
+    final isLoggedIn = await SharedPrefsHelper.isLoggedIn();
+
+    if (isLoggedIn) {
+      // User is already logged in, go directly to home screen
+      final username = await SharedPrefsHelper.getUsername();
+      final userId = await SharedPrefsHelper.getUserId() ?? '';
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(
+              username: username,
+              userId: userId,
+            ),
+          ),
+        );
+      }
+    } else {
+      // User is not logged in, show login screen after splash
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -61,50 +102,54 @@ class _FirstScreenState extends State<FirstScreen> {
                       color: Colors.black87,
                     ),
                   ),
-                  SizedBox(height: height * 0.15),
+                  SizedBox(height: height * 0.20),
                   Image.asset(
                     'assets/images/splashscreen.png',
-                    width: width * 1.5,
+                    width: width * 2.5,
                     fit: BoxFit.contain,
                   ),
                 ],
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: height * 0.018,
-                    horizontal: width * 0.08,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(width * 0.1),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 6,
-                        offset: const Offset(0, 3),
+              // Optional: You can keep the Get Started button or remove it
+              // since navigation will happen automatically
+              Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: height * 0.018,
+                  horizontal: width * 0.08,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(width * 0.1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: width * 0.06,
+                      height: width * 0.06,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          const Color(0xFF1E80C9),
+                        ),
                       ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.arrow_forward, color: const Color(0xFF1E80C9), size: width * 0.06),
-                      SizedBox(width: width * 0.05),
-                      Text(
-                        'Get Started',
-                        style: TextStyle(fontSize: width * 0.055, color: Colors.black87),
+                    ),
+                    SizedBox(width: width * 0.05),
+                    Text(
+                      'Loading...',
+                      style: TextStyle(
+                        fontSize: width * 0.055,
+                        color: Colors.black87,
                       ),
-                      SizedBox(width: width * 0.025),
-                      Icon(Icons.check_circle, color: const Color(0xFF1E80C9), size: width * 0.06),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               )
             ],

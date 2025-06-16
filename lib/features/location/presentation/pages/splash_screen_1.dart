@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_attendance_project/core/constants/app_colors.dart';
 import 'package:smart_attendance_project/core/constants/app_text.dart';
+import 'package:smart_attendance_project/core/constants/shared_prefsHelper.dart';
 import '../../../home_dashboard/presentation/pages/home_screen.dart';
 
 class SplashScreen1 extends StatefulWidget {
@@ -15,11 +16,17 @@ class _SplashScreen1State extends State<SplashScreen1> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 8), () {
+    Future.delayed(const Duration(seconds: 4), ()async {
+      final username = await SharedPrefsHelper.getUsername();
+      final Userid = await SharedPrefsHelper.getUserId() ??'';
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomeScreen(isCheckedIn: true,username: AutofillHints.username,),
+          builder: (context) =>  HomeScreen(
+            isCheckedIn: true,
+            username: username,
+            userId: Userid,
+          ),
         ),
       );
     });

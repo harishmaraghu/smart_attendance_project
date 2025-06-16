@@ -4,9 +4,13 @@ import 'package:smart_attendance_project/features/clams/presentation/pages/claim
 import 'package:smart_attendance_project/features/leave/leave_dashboard/data/datasours/leave_dashboard_repository.dart';
 import 'package:smart_attendance_project/features/leave/leave_dashboard/presentation/bloc/leave_dash_bloc.dart';
 import 'package:smart_attendance_project/features/leave/leave_dashboard/presentation/screens/leave_dashboard_page.dart';
+import 'package:smart_attendance_project/features/loan/domain/loan_repo_impl.dart';
+import 'package:smart_attendance_project/features/loan/presentation/bloc/loan_bloc.dart';
+import 'package:smart_attendance_project/features/loan/presentation/screens/apply/loan_form.dart';
 import 'package:smart_attendance_project/features/payment/payslip/data/services/payslipapiservice.dart';
 import 'package:smart_attendance_project/features/payment/payslip/presentation/bloc/pay_slip_bloc.dart';
 import 'package:smart_attendance_project/features/payment/payslip/presentation/pages/payment_history.dart';
+import 'package:smart_attendance_project/features/splashscreens/first_screen.dart';
 // import 'package:smart_attendance_project/features/leave/presentation/pages/leave_history/leave_record.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/shared_prefsHelper.dart';
@@ -35,123 +39,45 @@ class _TopDashboardHeaderState extends State<TopDashboardHeader> {
     context.read<UserDataBloc>().add(LoadUserDataEvent());
   }
 
-  Future<void> _handleLogout() async {
-    if (!mounted) return;
-
+  Future<void> _logout() async {
+    // Show confirmation dialog
     final shouldLogout = await showDialog<bool>(
       context: context,
-      barrierDismissible: false,
-      builder: (BuildContext dialogContext) {
+      builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          title: Row(
-            children: [
-              Icon(Icons.logout, color: Colors.red),
-              SizedBox(width: 8),
-              Text(
-                'Logout',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          content: Text(
-            'Are you sure you want to logout?',
-            style: TextStyle(fontSize: 16),
-          ),
+          title: const Text('Logout'),
+          content: const Text('Are you sure you want to logout?'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 16,
-                ),
-              ),
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
             ),
-            ElevatedButton(
-              onPressed: () => Navigator.of(dialogContext).pop(true),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text(
-                'Logout',
-                style: TextStyle(fontSize: 16),
-              ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('Logout'),
             ),
           ],
         );
       },
     );
 
-    if (shouldLogout != true || !mounted) return;
+    if (shouldLogout == true) {
+      try {
+        // Clear user data from SharedPreferences
+        await SharedPrefsHelper.clearUserData();
 
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext loadingContext) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: Center(
-            child: Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(
-                    color: colors.backgroundcolor,
-                  ),
-                  SizedBox(height: 16),
-                  Text('Logging out...'),
-                ],
-              ),
-            ),
-          ),
+        // Navigate back to FirstScreen (splash screen)
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const FirstScreen()),
+              (route) => false,
         );
-      },
-    );
-
-    try {
-      await SharedPrefsHelper.clearUserData();
-      await Future.delayed(Duration(milliseconds: 500));
-
-      if (!mounted) return;
-
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-            (route) => false,
-      );
-
-      if (mounted) {
+      } catch (e) {
+        print('Logout error: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Logged out successfully'),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error logging out: ${e.toString()}'),
+          const SnackBar(
+            content: Text('Error during logout'),
             backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
           ),
         );
       }
@@ -245,7 +171,7 @@ class _TopDashboardHeaderState extends State<TopDashboardHeader> {
 
                       switch (value) {
                         case 'logout':
-                          _handleLogout();
+                          _logout();
                           break;
                         case 'attendance':
                         // Use userId from BLoC state instead of SharedPrefs call
@@ -361,21 +287,21 @@ class _TopDashboardHeaderState extends State<TopDashboardHeader> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildIcon(Icons.access_time, 'Attendance', () {
-                      // Use userId from BLoC state instead of async SharedPrefs call
-                      if (userId != null && userId.isNotEmpty) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => AttendanceHistory(Userid: userId!),
-                          ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("User ID not found")),
-                        );
-                      }
-                    }),
+                    // _buildIcon(Icons.access_time, 'Attendance', () {
+                    //   // Use userId from BLoC state instead of async SharedPrefs call
+                    //   if (userId != null && userId.isNotEmpty) {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (_) => AttendanceHistory(Userid: userId!),
+                    //       ),
+                    //     );
+                    //   } else {
+                    //     ScaffoldMessenger.of(context).showSnackBar(
+                    //       const SnackBar(content: Text("User ID not found")),
+                    //     );
+                    //   }
+                    // }),
                     _buildIcon(Icons.assignment, 'Claims', () {
 
                       if (userId != null && userId.isNotEmpty) {
@@ -392,6 +318,31 @@ class _TopDashboardHeaderState extends State<TopDashboardHeader> {
                       }
                       // Navigator.push(context, MaterialPageRoute(builder: (_) => ClaimsCreate()));
                     }),
+
+                    _buildIcon(Icons.access_time, 'Loan', () {
+
+                      if (userId != null && userId.isNotEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => BlocProvider(
+                              create: (context) => LoanBloc(), // Fixed syntax
+                              child: LoanForm(
+                                Userid: userId!, // Pass userId
+                                username: displayUsername, // Pass username
+                                 // Will use current month, or pass specific date
+                              ),
+                            ),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("User ID not found")),
+                        );
+                      }
+                      // Navigator.push(context, MaterialPageRoute(builder: (_) => ClaimsCreate()));
+                    }),
+
                     _buildIcon(Icons.receipt_long, 'Payslip', () {
 
                       if (userId != null && userId.isNotEmpty) {

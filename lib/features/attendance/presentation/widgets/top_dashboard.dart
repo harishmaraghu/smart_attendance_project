@@ -12,7 +12,7 @@ class TopDashboardHeaderinAttendance extends StatefulWidget {
 
 class _TopDashboardHeaderinAttendanceState extends State<TopDashboardHeaderinAttendance> {
   final colors = AppColors();
-  String username = 'User';
+  // String username = 'User';
 
   @override
   Widget build(BuildContext context) {

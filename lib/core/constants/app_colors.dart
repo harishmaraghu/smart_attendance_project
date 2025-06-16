@@ -21,6 +21,9 @@ class AppColors{
   final leave_dashboard_card_2_color= Color(0xffC3E9FF);
   final leave_dashboard_card_3_color= Color(0xff1E5177);
   final leave_dashboard_card_4_color= Color(0xff348DC1);
+  final loan_apply_form_texfiled_bg= Color(0xffD2EDFF);
+  final loan_history_form_bg= Color(0xffF2FAFF);
+  final loan_apply_form_texfiled= Color(0xff1064A2);
 
 
 

@@ -42,6 +42,8 @@ android {
         // Other dependencies
         implementation ( "androidx.fragment:fragment:1.8.6")
     }
+
+
 }
 
 flutter {
