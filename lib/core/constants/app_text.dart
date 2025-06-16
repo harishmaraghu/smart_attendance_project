@@ -60,7 +60,7 @@ class AppTextstyle {
    );
 
    static final button_text = TextStyle(
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: FontWeight.bold,
       color: _colors.button_bg_text_color,
    );
@@ -113,11 +113,28 @@ class AppTextstyle {
       fontWeight: FontWeight.w500,
    );
 
+
    static final form_heading_text_bold=TextStyle(color: Colors.white, fontWeight: FontWeight.bold);
+
+   static final form_2_heading_text_bold=TextStyle(color: Colors.black, fontWeight: FontWeight.bold);
+
+
+   //
+   static final heading_text_bold=TextStyle(fontSize: 18,
+       fontWeight: FontWeight.bold,
+       color: Colors.grey[800],);
+
+
    static final form_input_text_bold=TextStyle(color: Colors.grey);
 
 //    Clim Create form
-    static final claim_form_heading_text=TextStyle(color: Colors.grey,fontSize: 14);
+    static final claim_form_heading_text=TextStyle(color: Colors.grey,fontSize: 14,fontWeight: FontWeight.w300);
 
+
+//     top navbar heading text
+   static final heading_text=TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w500,
+   );
 
 }

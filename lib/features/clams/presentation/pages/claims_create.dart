@@ -16,7 +16,7 @@ class ClaimsCreate extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            TopDashboardHeaderinClaimApply(userId: Userid,userName: username,),
+            TopDashboardHeaderinClaimApply(userId: Userid,),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(

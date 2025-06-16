@@ -15,6 +15,7 @@ class LocationScreen extends StatefulWidget {
   final bool isCheckout;
   final String? imagePath;
 
+
   const LocationScreen({super.key, this.isCheckout = false, this.imagePath});
 
   @override
@@ -24,6 +25,8 @@ class LocationScreen extends StatefulWidget {
 class _LocationScreenState extends State<LocationScreen> {
   GoogleMapController? _mapController;
   bool _isMapReady = false;
+  String selectedLabel = "Entry in"; // default selected
+
 
   @override
   void initState() {
@@ -54,6 +57,9 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   @override
+  // Updated LocationScreen with proper navigation handling
+
+  @override
   Widget build(BuildContext context) {
     // Using MediaQuery to get the screen size
     final screenWidth = MediaQuery.of(context).size.width;
@@ -73,9 +79,41 @@ class _LocationScreenState extends State<LocationScreen> {
               ),
             );
           }
+
+          // ✅ Handle navigation only on successful API response
+          if (state.shouldNavigate && state.navigationTimeType != null) {
+            print("✅ API Success - Navigating for ${state.navigationTimeType}");
+
+            if (state.navigationTimeType == "inTime") {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SplashScreen1(isCheckedIn: true),
+                ),
+              );
+            } else if (state.navigationTimeType == "outTime") {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SplashScreen2(isCheckedIn: false),
+                ),
+              );
+            }
+          }
+
+          // ✅ Show error messages if API fails
+          if (state.error != null && state.error!.contains("Failed to")) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error!),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
         },
         builder: (context, state) {
-          if (state.error != null) {
+          if (state.error != null && !state.error!.contains("Failed to")) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -133,16 +171,25 @@ class _LocationScreenState extends State<LocationScreen> {
                     margin: const EdgeInsets.all(16),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors().lightbackgroundcolor,
+                      color: AppColors().whitecolor,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Latitude: ${state.latitude?.toStringAsFixed(6)}"),
-                        Text("Longitude: ${state.longitude?.toStringAsFixed(6)}"),
-                        const SizedBox(height: 8),
-                        Text("Address: ${state.address ?? 'Loading address...'}"),
+                        Row(
+                          children: [
+                            Icon(Icons.location_on, size: 20, color: Colors.grey),
+                            SizedBox(width: 8), // Space between icon and text
+                            Expanded(
+                              child: Text(
+                                "Address: ${state.address ?? 'Loading address...'}",
+                                style: TextStyle(fontSize: 16),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -158,32 +205,42 @@ class _LocationScreenState extends State<LocationScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // Entry In
                             _timeCard(
                               icon: Icons.access_time,
                               time: formatTime(state.checkInTime),
                               label: "Entry in",
-                              bgColor: Colors.green,
-                              iconColor: Colors.white,
+                              bgColor: selectedLabel == "Entry in" ? AppColors().backgroundcolor : Colors.blue,
+                              iconColor: AppColors().whitecolor,
+                              onTap: () {
+                                setState(() {
+                                  selectedLabel = "Entry in";
+                                });
+                              },
                             ),
-
-                            // Entry Out
                             _timeCard(
                               icon: Icons.access_time,
                               time: formatTime(state.checkOutTime),
                               label: "Entry out",
-                              bgColor: Colors.blue,
-                              iconColor: Colors.white,
+                              bgColor: selectedLabel == "Entry out" ? AppColors().backgroundcolor : Colors.green,
+                              iconColor: AppColors().whitecolor,
+                              onTap: () {
+                                setState(() {
+                                  selectedLabel = "Entry out";
+                                });
+                              },
                             ),
-
-                            // Total Hours
                             _timeCard(
                               icon: Icons.access_time,
                               time: calculateTotalHours(state.checkInTime, state.checkOutTime),
                               label: "total hrs",
-                              bgColor: Colors.grey.shade200,
+                              bgColor: selectedLabel == "total hrs" ? Colors.grey.shade400 : Colors.grey.shade200,
                               iconColor: Colors.grey,
                               textColor: Colors.black54,
+                              onTap: () {
+                                setState(() {
+                                  selectedLabel = "total hrs";
+                                });
+                              },
                             ),
                           ],
                         ),
@@ -194,73 +251,89 @@ class _LocationScreenState extends State<LocationScreen> {
 
                   const SizedBox(height: 20),
 
-                  // Check In or Check Out button
+                  // ✅ Updated Check In or Check Out button
                   Center(
                     child: GestureDetector(
                       onTap: () {
+                        // ✅ Prevent multiple taps while processing
+                        if (state.isUploadingImage) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Please wait, processing..."),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                          return;
+                        }
+
                         final bloc = BlocProvider.of<LocationBloc>(context);
                         if (state.checkInTime == null) {
+                          print("🔄 Initiating Check In...");
                           bloc.add(CheckInPressed());
-                          Future.delayed(const Duration(milliseconds: 1500), () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SplashScreen1(isCheckedIn: true),
-                              ),
-                            );
-                          });
                         } else {
+                          print("🔄 Initiating Check Out...");
                           bloc.add(CheckOutPressed());
-                          Future.delayed(const Duration(milliseconds: 1500), () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SplashScreen2(isCheckedIn: false),
-                              ),
-                            );
-                          });
                         }
+                        // ✅ Navigation now handled in BlocListener based on API success
                       },
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 500),
-                        width: screenWidth * 0.4,
-                        height: screenWidth * 0.4,
+                        width: screenWidth * 0.3,
+                        height: screenWidth * 0.3,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: state.checkInTime == null ? Colors.green : Colors.red,
-                          border: Border.all(color: const Color(0xffF1FAFE), width: 15),
+                          border: Border.all(color: const Color(0xffF1FAFE), width: 10),
                           boxShadow: [
                             // Outer white glow
                             BoxShadow(
                               color: Colors.grey.withAlpha(80),
-                              blurRadius: 20,
-                              spreadRadius: 12,
-                              offset: const Offset(0, 10),
+                              blurRadius: 18,
+                              spreadRadius: 10,
+                              offset: const Offset(0, 8),
                             ),
                             // Inner shadow to lift button
                             BoxShadow(
-                              color: Colors.black.withAlpha(30),
+                              color: Colors.black.withAlpha(28),
                               blurRadius: 10,
                               offset: const Offset(0, 5),
                             ),
                           ],
                         ),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.touch_app,
-                                color: Colors.white,
-                                size: screenWidth * 0.1,
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.touch_app,
+                                    color: Colors.white,
+                                    size: screenWidth * 0.1,
+                                  ),
+                                  SizedBox(height: screenHeight * 0.01),
+                                  Text(
+                                    state.checkInTime == null ? "Check In" : "Check Out",
+                                    style: AppTextstyle.normal_text_2.copyWith(fontSize: 14),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: screenHeight * 0.01),
-                              Text(
-                                state.checkInTime == null ? "Check In" : "Check Out",
-                                style: AppTextstyle.normal_text_2,
+                            ),
+                            // ✅ Show loading indicator while processing
+                            if (state.isUploadingImage)
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.black.withOpacity(0.3),
+                                ),
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                ),
                               ),
-                            ],
-                          ),
+                          ],
                         ),
                       ),
                     ),
@@ -295,28 +368,29 @@ Widget _timeCard({
   required Color bgColor,
   required Color iconColor,
   Color textColor = Colors.white,
+  required VoidCallback onTap,
 }) {
-  return Container(
-    width: 80,
-    padding: const EdgeInsets.symmetric(vertical: 12),
-    decoration: BoxDecoration(
-      color: bgColor,
-      borderRadius: BorderRadius.circular(8),
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: iconColor),
-        const SizedBox(height: 4),
-        Text(
-            time,
-            style: AppTextstyle.pragra_text_2
-        ),
-        Text(
-          label,
-          style: TextStyle(fontSize: 12, color: textColor),
-        ),
-      ],
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      width: 80,
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: iconColor),
+          const SizedBox(height: 4),
+          Text(time, style: AppTextstyle.pragra_text_2),
+          Text(
+            label,
+            style: TextStyle(fontSize: 12, color: textColor),
+          ),
+        ],
+      ),
     ),
   );
 }

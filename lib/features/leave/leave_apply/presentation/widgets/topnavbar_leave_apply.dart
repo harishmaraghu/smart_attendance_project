@@ -2,15 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:smart_attendance_project/core/constants/app_colors.dart';
 import 'package:smart_attendance_project/core/constants/app_text.dart';
 import 'package:smart_attendance_project/features/clams/presentation/pages/claims_create.dart';
-// import 'package:smart_attendance_project/features/leave/presentation/pages/leave_history/leave_record.dart';
-// import 'package:smart_attendance_project/features/leave/presentation/pages/leaveapply/leave_apply_screen.dart';
-// import '../../../../core/constants/app_colors.dart';
-// import '../../../attendance/presentation/pages/attendance_history.dart';
-// import '../../../payment/presentation/pages/payment_history.dart';
+
 
 class TopDashboardHeaderinLeaveApply extends StatelessWidget {
   final colors = AppColors();
-  // final String username ="demo";
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +16,7 @@ class TopDashboardHeaderinLeaveApply extends StatelessWidget {
     return Container  (
       width: double.infinity,
       padding: EdgeInsets.only(
-        top: screenHeight * 0.04,
+        top: screenHeight * 0.05,
         left: screenWidth * 0.05,
         right: screenWidth * 0.05,
         bottom: screenHeight * 0.02,
@@ -48,7 +44,11 @@ class TopDashboardHeaderinLeaveApply extends StatelessWidget {
                   height: screenWidth * 0.10,
                 ),
               ),
-              Text('Apply Leave',style: AppTextstyle.normal_text_2),
+              SizedBox(width: 12),
+              Text('Create Leave',style: AppTextstyle.heading_text.copyWith(
+                fontSize: 18,
+              ),
+              ),
             ],
           ),
         ],

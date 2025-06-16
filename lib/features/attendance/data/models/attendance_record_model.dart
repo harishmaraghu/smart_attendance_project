@@ -16,18 +16,32 @@ class AttendanceRecord {
   });
 
   factory AttendanceRecord.fromJson(Map<String, dynamic> json) {
-    final inTime = json['inTime'];
-    final outTime = json['outTime'];
+    final rawInTime = json['inTime'];
+    final rawOutTime = json['outTime'];
+
+    String? inTime = _extractTime(rawInTime);
+    String? outTime = _extractTime(rawOutTime);
 
     return AttendanceRecord(
       date: DateTime.parse(json['date']),
       inTime: inTime,
       outTime: outTime,
       status: (inTime != null && outTime != null) ? "Present" : "Absent",
-      name: json['name'] ?? "demo", // Use actual name from JSON or fallback
+      name: json['name'] ?? "demo",
       totalHours: _calculateTotalHours(inTime, outTime),
     );
   }
+
+  static String? _extractTime(dynamic value) {
+    if (value == null) return null;
+
+    final str = value.toString();
+    final timeRegex = RegExp(r'(\d{2}:\d{2})'); // Matches "08:00", "14:45", etc.
+
+    final match = timeRegex.firstMatch(str);
+    return match != null ? match.group(1) : null;
+  }
+
 
   static String? _calculateTotalHours(String? inTime, String? outTime) {
     if (inTime == null || outTime == null) return null;

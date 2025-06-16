@@ -11,7 +11,8 @@ import 'package:smart_attendance_project/features/leave/leave_apply/presentation
 class LeaveApplyScreen extends StatefulWidget {
   final String userId;
   final String userName;
-  const LeaveApplyScreen({required this.userId, required this.userName, Key? key}) : super(key: key);
+  const LeaveApplyScreen
+      ({required this.userId, required this.userName, Key? key}) : super(key: key);
 
   @override
   State<LeaveApplyScreen> createState() => _LeaveApplyScreenState();

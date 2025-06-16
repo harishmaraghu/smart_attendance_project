@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_attendance_project/core/constants/app_colors.dart';
-import 'package:smart_attendance_project/features/history_claim/presentation/screens/claim_history_screen.dart' show ClaimHistoryScreen;
+
 import '../../../../../core/constants/app_text.dart';
 import '../../bloc/claim_create_bloc.dart';
 import '../../bloc/claim_create_event.dart';
 import '../../bloc/claim_create_state.dart';
-import '../../pages/claim_history.dart';
+
 import 'claim_create_button.dart';
 
 class ClaimForm extends StatefulWidget {

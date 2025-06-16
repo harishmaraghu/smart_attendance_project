@@ -50,10 +50,6 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
         );
       }
 
-      // _attendanceRecords = _attendanceRepository.getAttendanceemployee(
-      //          widget.userid,
-      // );
-
       // Wait for future to complete to catch any errors
       await _attendanceRecords;
     } catch (e) {
@@ -176,11 +172,11 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
                   tooltip: "Clear date filter",
                 ),
               if (_isLoading)
-                const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
+                 const SizedBox(
+                //   width: 20,
+                //   height: 20,
+                //   child: CircularProgressIndicator(strokeWidth: 2),
+                 ),
             ],
           ),
         ],
@@ -236,6 +232,7 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
         }
 
         final records = snapshot.data!;
+        records.sort((a, b) => b.date.compareTo(a.date));
 
         return ListView.builder(
           itemCount: records.length,

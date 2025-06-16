@@ -12,7 +12,7 @@
 
 
     <application
-        android:label="smart_attendance_project"
+        android:label="SiteHero"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 

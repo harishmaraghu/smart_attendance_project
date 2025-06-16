@@ -5,9 +5,24 @@ import 'package:smart_attendance_project/features/home_dashboard/presentation/pa
 import '../../../../../core/constants/app_colors.dart';
 
 
-class TopDashboarinClaimHistory extends StatelessWidget {
+class TopDashboarinClaimHistory extends StatefulWidget {
+  final String username;
+  final String userid;
+
+
+  const TopDashboarinClaimHistory({Key? key, required this.username,required this.userid}) : super(key: key);
+
+
+
+  @override
+  State<TopDashboarinClaimHistory> createState() => _TopDashboarinClaimHistoryState();
+}
+
+class _TopDashboarinClaimHistoryState extends State<TopDashboarinClaimHistory> {
   final colors = AppColors();
-  final String username ="demo";
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +54,7 @@ class TopDashboarinClaimHistory extends StatelessWidget {
               // Menu Icon with PopupMenu
               GestureDetector(
                 onTap: () => Navigator.push(
-        context, MaterialPageRoute(builder: (context)=>HomeScreen(username: username))),
+        context, MaterialPageRoute(builder: (context)=>HomeScreen(username: widget.username,userId: widget.userid,))),
                 child: Image.asset(
                   'assets/icons/back_icon.png',
                   width: screenWidth * 0.12,

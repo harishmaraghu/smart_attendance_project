@@ -16,14 +16,20 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
       Emitter<PayslipState> emit,
       ) async {
     emit(PayslipLoading());
+
     try {
+      print('Loading payslip for: ${event.userId}, ${event.username}, ${event.date}');
+
       final payslip = await _apiService.getPayslip(
         userId: event.userId,
         username: event.username,
         date: event.date,
       );
+
+      print('Payslip loaded successfully');
       emit(PayslipLoaded(payslip));
     } catch (e) {
+      print('Error loading payslip: $e');
       emit(PayslipError(e.toString()));
     }
   }
@@ -32,14 +38,20 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
       RefreshPayslip event,
       Emitter<PayslipState> emit,
       ) async {
+    // Don't show loading state for refresh, just update the data
     try {
+      print('Refreshing payslip for: ${event.userId}, ${event.username}, ${event.date}');
+
       final payslip = await _apiService.getPayslip(
         userId: event.userId,
         username: event.username,
         date: event.date,
       );
+
+      print('Payslip refreshed successfully');
       emit(PayslipLoaded(payslip));
     } catch (e) {
+      print('Error refreshing payslip: $e');
       emit(PayslipError(e.toString()));
     }
   }
