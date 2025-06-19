@@ -382,14 +382,14 @@ class _HistoryViewState extends State<HistoryView> {
                     ),
                   ],
                 ),
-                Text(
-                  _formatTime(item.dateOfClaim),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                // Text(
+                //   _formatTime(item.dateOfClaim),
+                //   style: TextStyle(
+                //     fontSize: 12,
+                //     color: Colors.grey[600],
+                //     fontWeight: FontWeight.w500,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -755,15 +755,15 @@ class _HistoryViewState extends State<HistoryView> {
     }
   }
 
-  String _formatTime(String dateString) {
-    try {
-      final date = DateTime.parse(dateString);
-      return DateFormat('hh:mm a').format(date);
-    } catch (e) {
-      // Optionally print error or handle logging
-      return DateFormat('hh:mm a').format(DateTime.now()); // Return current time if parsing fails
-    }
-  }
+  // String _formatTime(String dateString) {
+  //   try {
+  //     final date = DateTime.parse(dateString);
+  //     return DateFormat('hh:mm a').format(date);
+  //   } catch (e) {
+  //     // Optionally print error or handle logging
+  //     return DateFormat('hh:mm a').format(DateTime.now()); // Return current time if parsing fails
+  //   }
+  // }
 }
 
 

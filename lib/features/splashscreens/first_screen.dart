@@ -134,16 +134,16 @@ class _FirstScreenState extends State<FirstScreen> {
                     SizedBox(
                       width: width * 0.06,
                       height: width * 0.06,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          const Color(0xFF1E80C9),
-                        ),
-                      ),
+                      // child: CircularProgressIndicator(
+                      //   strokeWidth: 2,
+                      //   valueColor: AlwaysStoppedAnimation<Color>(
+                      //     const Color(0xFF1E80C9),
+                      //   ),
+                      // ),
                     ),
                     SizedBox(width: width * 0.05),
                     Text(
-                      'Loading...',
+                      'Get Started',
                       style: TextStyle(
                         fontSize: width * 0.055,
                         color: Colors.black87,
